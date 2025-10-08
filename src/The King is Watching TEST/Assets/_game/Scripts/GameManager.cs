@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] Transform _fieldParent;
 	[Space]
 	[SerializeField] Item _itemPrefab;
-	[SerializeField] GameObject _itemCell;
+	[SerializeField] ItemCell _itemCell;
 	[SerializeField] Transform _freeItemsParent;
 	[SerializeField] ItemDataCollection _itemDataCollection;
 
@@ -79,11 +79,12 @@ public class GameManager : MonoBehaviour
 
 			foreach (var cellData in item.Cells)
 			{
-				Instantiate(_itemCell, cellData.AsVector3(), Quaternion.identity, new InstantiateParameters()
-				{
-					parent = item.transform,
-					worldSpace = false,
-				});
+				var itemCell = Instantiate(_itemCell, cellData.AsVector3(), Quaternion.identity, new InstantiateParameters()
+					{
+						parent = item.transform,
+						worldSpace = false,
+					})
+					.With(ic => ic.SetItem(item));
 			}
 		}
 	}
