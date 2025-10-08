@@ -21,14 +21,6 @@ namespace Map
 			0 <= x && x < Size.x &&
 			0 <= y && y < Size.y;
 
-		public bool Has(T type, int x, int y)
-		{
-			if (Has(x, y) == false)
-				return false;
-
-			return IsEquals(_cells[x, y], type);
-		}
-
 		public bool TrySet(T value, int x, int y)
 		{
 			if (Has(x, y) == false)
@@ -70,15 +62,6 @@ namespace Map
 					yield return new(cell, _cells[cell.x, cell.y]);
 		}
 
-		public IEnumerable<Vector2Int> AllCoordinates(T value)
-		{
-			foreach (var pos in (IEnumerable<Vector2Int>)this)
-			{
-				var equals = IsEquals(_cells[pos.x, pos.y], value);
-				if (equals) yield return pos;
-			}
-		}
-
 		public IEnumerable<Vector2Int> AllCoordinates(Func<T, bool> where)
 		{
 			if (where == null)
@@ -98,8 +81,6 @@ namespace Map
 			for (int y = 0; y < Size.y; y++)
 				yield return new Vector2Int(x, y);
 		}
-
-		protected abstract bool IsEquals(T a, T b);
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
