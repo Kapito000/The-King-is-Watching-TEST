@@ -85,6 +85,8 @@ public class GameManager : MonoBehaviour
 						worldSpace = false,
 					})
 					.With(ic => ic.SetItem(item));
+				
+				item.AddItemCell(itemCell);
 			}
 		}
 	}

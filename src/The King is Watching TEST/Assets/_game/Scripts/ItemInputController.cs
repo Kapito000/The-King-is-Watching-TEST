@@ -1,28 +1,37 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
 public sealed class ItemInputController : MonoBehaviour
 {
-	[SerializeField] Vector2 _pos;
+	[field: SerializeField] public Vector2 WorldPos { get; private set; }
+	[field: SerializeField] public Vector2 ScreenPos { get; private set; }
+
+	public event Action<IItem> Taked;
 
 	void OnPos(InputValue value)
 	{
-		_pos = value.Get<Vector2>();
+		WorldPos = Camera().ScreenToWorldPoint(ScreenPos);
+		ScreenPos = value.Get<Vector2>();
 	}
 
 	void OnTake()
 	{
-		Vector2 worldPos = Camera.main.ScreenToWorldPoint(_pos);
+		Vector2 worldPos = Camera().ScreenToWorldPoint(ScreenPos);
 		RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
 
-		if (hit.collider != null)
-		{
-			Debug.Log("Клик по: " + hit.collider.gameObject.name);
-		}
-	}
+		if (hit.collider == null ||
+		    hit.collider.TryGetComponent<IItemCell>(out var itemCell) == false ||
+		    itemCell.Item == null)
+			return;
 
+		Taked?.Invoke(itemCell.Item);
+	}
 
 	void OnRotate()
 	{ }
+
+	Camera Camera() =>
+		UnityEngine.Camera.main;
 }
