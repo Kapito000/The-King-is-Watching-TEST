@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
+using Extensions;
 using UnityEngine;
 
 public sealed class Item : MonoBehaviour, IItem
 {
 	[SerializeField] Vector2Int[] _cells;
 
-	[field: SerializeField] public ItemOrientation Orientation { get; set; }
-
-	List<IItemCell> _itemCells = new();
+	List<ItemCell> _itemCells = new();
 
 	public Vector2Int[] Cells
 	{
@@ -15,7 +14,7 @@ public sealed class Item : MonoBehaviour, IItem
 		set => _cells = value.Clone() as Vector2Int[];
 	}
 
-	public void AddItemCell(IItemCell itemCell)
+	public void AddItemCell(ItemCell itemCell)
 	{
 		_itemCells.Add(itemCell);
 	}
@@ -33,5 +32,14 @@ public sealed class Item : MonoBehaviour, IItem
 	public void MoveTo(Vector2 pos)
 	{
 		transform.position = pos;
+	}
+
+	public void Rotate()
+	{
+		for (var i = 0; i < _cells.Length; i++)
+		{
+			_cells[i] = _cells[i].Rotate90();
+			_itemCells[i].transform.localPosition = _cells[i].AsVector3();
+		}
 	}
 }

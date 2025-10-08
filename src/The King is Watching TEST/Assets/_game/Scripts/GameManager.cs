@@ -77,9 +77,9 @@ public class GameManager : MonoBehaviour
 
 			item.Cells = itemData.Cells;
 
-			foreach (var cellData in item.Cells)
+			foreach (var cellPos in item.Cells)
 			{
-				var itemCell = Instantiate(_itemCell, cellData.AsVector3(), Quaternion.identity, new InstantiateParameters()
+				var itemCell = Instantiate(_itemCell, cellPos.AsVector3(), Quaternion.identity, new InstantiateParameters()
 					{
 						parent = item.transform,
 						worldSpace = false,

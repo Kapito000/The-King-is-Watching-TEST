@@ -10,11 +10,13 @@ public sealed class Hand : MonoBehaviour
 	void Awake()
 	{
 		_inputController.Taked += OnTaked;
+		_inputController.Rotate += OnRotate;
 	}
 
 	void OnDestroy()
 	{
 		_inputController.Taked -= OnTaked;
+		_inputController.Rotate -= OnRotate;
 	}
 
 	void Update()
@@ -31,6 +33,14 @@ public sealed class Hand : MonoBehaviour
 			return;
 
 		CaptureItem(item);
+	}
+
+	void OnRotate()
+	{
+		if (_isCaptured)
+			return;
+		
+		_captured.Rotate();
 	}
 
 	void CaptureItem(IItem item)
