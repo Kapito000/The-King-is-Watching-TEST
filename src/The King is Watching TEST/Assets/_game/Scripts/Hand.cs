@@ -1,33 +1,23 @@
+using Input;
 using TetrisFields;
 using TetrisFields.Items;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Serialization;
+using Zenject;
 
 public sealed class Hand : MonoBehaviour
 {
 	[SerializeField] bool _isCaptured;
-	[FormerlySerializedAs("gameBootstraper")] [FormerlySerializedAs("_gameManager")] [SerializeField] GameBootstrapper gameBootstrapper;
-	[SerializeField] ItemInputController _inputController;
+	[FormerlySerializedAs("gameBootstraper")]
+	[FormerlySerializedAs("_gameManager")] [SerializeField]
+	GameBootstrapper gameBootstrapper;
+	[Inject] IInputService _inputService;
 
 	IItem _captured;
 
-	void Awake()
-	{
-		Assert.IsNotNull(gameBootstrapper);
-		Assert.IsNotNull(_inputController);
-
-		_inputController.Put += OnPut;
-		_inputController.Taked += OnTaked;
-		_inputController.Rotate += OnRotate;
-	}
-
 	void OnDestroy()
-	{
-		_inputController.Put -= OnPut;
-		_inputController.Taked -= OnTaked;
-		_inputController.Rotate -= OnRotate;
-	}
+	{ }
 
 	void Update()
 	{
@@ -59,8 +49,8 @@ public sealed class Hand : MonoBehaviour
 			return;
 
 		// if (_gameManager.TryPlace(fieldCell, _captured) == false)
-			// return;
-	
+		// return;
+
 		DropItem();
 	}
 

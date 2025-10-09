@@ -1,5 +1,6 @@
 using Extensions;
 using Infrastructure;
+using Input;
 using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
@@ -21,6 +22,7 @@ public class GameBootstrapper : MonoBehaviour
 	Transform _itemsParent;
 
 	[Inject] IItemFactory _itemFactory;
+	[Inject] IInputService _inputService;
 	[Inject] ITetrisFieldFactory _fieldFactory;
 	[Inject] IItemDataCollection _itemDataCollection;
 
@@ -32,6 +34,7 @@ public class GameBootstrapper : MonoBehaviour
 		CreateField();
 		CreateFreeItemsField();
 		CreateFreeItems();
+		_inputService.Enable();
 	}
 
 	void CreateField()

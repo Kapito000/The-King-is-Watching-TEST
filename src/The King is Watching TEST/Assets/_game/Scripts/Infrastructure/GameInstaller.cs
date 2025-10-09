@@ -1,4 +1,5 @@
-﻿using TetrisFields;
+﻿using Input;
+using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
 using UnityEngine;
@@ -28,15 +29,28 @@ namespace Infrastructure
 			BindTetrisField();
 			BindItemFactory();
 			BindItemsParent();
+			BindInputService();
 			BindGameFieldsParents();
 			BindTetrisFieldFactory();
 			BindItemDataCollection();
 		}
 
+		void BindInputService()
+		{
+			Container
+				.Bind<InputActions>()
+				.AsSingle();
+
+			Container
+				.BindInterfacesAndSelfTo<InputService>()
+				.AsSingle()
+				.OnInstantiated<InputService>((_, x) => x.Init());
+		}
+
 		void BindItemsParent()
 		{
 			Assert.IsNotNull(_itemsParent);
-			
+
 			Container
 				.BindInstance(_itemsParent)
 				.WithId(InjectId.ItemsParent);
@@ -45,7 +59,7 @@ namespace Infrastructure
 		void BindItemDataCollection()
 		{
 			Assert.IsNotNull(_itemDataCollection);
-			
+
 			Container
 				.Bind<IItemDataCollection>()
 				.FromInstance(_itemDataCollection)
@@ -64,7 +78,7 @@ namespace Infrastructure
 		{
 			Assert.IsNotNull(_itemPrefab);
 			Assert.IsNotNull(_itemCellPrefab);
-			
+
 			Container
 				.BindInstance(_itemPrefab)
 				.AsTransient();
@@ -77,7 +91,7 @@ namespace Infrastructure
 		{
 			Assert.IsNotNull(_gameFieldParent);
 			Assert.IsNotNull(_freeItemsFieldParent);
-			
+
 			Container
 				.BindInstance(_gameFieldParent)
 				.WithId(InjectId.GameFieldParent);
