@@ -1,4 +1,4 @@
-namespace TetrisFields
+namespace TetrisFields.Items
 {
 	public interface IItemCell
 	{

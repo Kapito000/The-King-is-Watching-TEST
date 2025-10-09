@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Menu = Constant.CreateAssetMenu.MenuName;
 
-namespace StaticData
+namespace TetrisFields.Items.StaticData
 {
 	[CreateAssetMenu(menuName = Menu.StaticData + nameof(ItemData))]
 	public sealed class ItemData : ScriptableObject, IItemData

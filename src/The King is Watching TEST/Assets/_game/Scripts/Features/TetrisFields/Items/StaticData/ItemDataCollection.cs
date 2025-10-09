@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Menu = Constant.CreateAssetMenu.MenuName;
 
-namespace StaticData
+namespace TetrisFields.Items.StaticData
 {
 	[CreateAssetMenu(menuName = Menu.StaticData + nameof(ItemDataCollection))]
 	public sealed class ItemDataCollection : ScriptableObject, IItemDataCollection

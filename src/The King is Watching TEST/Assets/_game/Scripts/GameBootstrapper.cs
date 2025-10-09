@@ -1,7 +1,8 @@
 using Extensions;
 using Infrastructure;
-using StaticData;
 using TetrisFields;
+using TetrisFields.Items;
+using TetrisFields.Items.StaticData;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;

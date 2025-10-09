@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace TetrisFields
+namespace TetrisFields.Items
 {
 	public interface IItem
 	{

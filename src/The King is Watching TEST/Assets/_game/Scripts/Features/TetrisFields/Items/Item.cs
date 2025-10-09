@@ -2,7 +2,7 @@
 using Extensions;
 using UnityEngine;
 
-namespace TetrisFields
+namespace TetrisFields.Items
 {
 	public sealed class Item : MonoBehaviour, IItem
 	{

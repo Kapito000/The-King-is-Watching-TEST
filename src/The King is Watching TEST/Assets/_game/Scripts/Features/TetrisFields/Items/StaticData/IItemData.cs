@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace StaticData
+namespace TetrisFields.Items.StaticData
 {
 	public interface IItemData
 	{

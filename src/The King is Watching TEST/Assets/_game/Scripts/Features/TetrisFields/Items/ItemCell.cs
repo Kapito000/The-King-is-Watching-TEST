@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace TetrisFields
+namespace TetrisFields.Items
 {
 	public sealed class ItemCell : MonoBehaviour, IItemCell
 	{

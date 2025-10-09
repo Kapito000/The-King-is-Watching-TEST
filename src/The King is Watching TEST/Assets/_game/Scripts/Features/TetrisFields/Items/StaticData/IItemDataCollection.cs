@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace StaticData
+namespace TetrisFields.Items.StaticData
 {
 	public interface IItemDataCollection : IEnumerable<IItemData>
 	{ }
