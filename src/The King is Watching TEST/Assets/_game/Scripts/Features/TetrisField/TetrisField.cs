@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace TetrisField
 {
-	public sealed class Field : MonoBehaviour, ITetrisField
+	public sealed class TetrisField : MonoBehaviour, ITetrisField
 	{
 		Grid<IItem> _itemsGrid;
 		Grid<IFieldCell> _fieldCellGrid;
@@ -17,6 +17,7 @@ namespace TetrisField
 		public void Init(Vector2Int size)
 		{
 			_itemsGrid = new Grid<IItem>(size.x, size.y);
+			_fieldCellGrid = new Grid<IFieldCell>(size.x, size.y);
 		}
 
 		public bool CanPutItem(Vector2Int pos, IItem item)

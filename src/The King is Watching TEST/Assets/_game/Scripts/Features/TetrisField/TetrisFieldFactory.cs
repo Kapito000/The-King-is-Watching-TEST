@@ -6,24 +6,32 @@ namespace TetrisField
 {
 	public sealed class TetrisFieldFactory : ITetrisFieldFactory
 	{
-		[Inject]
-		DiContainer _diContainer;
+		[Inject] DiContainer _diContainer;
+		[Inject] IInstantiator _instantiator;
 
 		public ITetrisField CreateField(Transform parent, Vector2Int size)
 		{
-			var field = _diContainer.Resolve<Field>();
+			var fieldPrefab = _diContainer.Resolve<TetrisField>();
+			var field = _instantiator
+				.InstantiatePrefabForComponent<TetrisField>(fieldPrefab,
+					parent.position,
+					Quaternion.identity, parent);
+
 			field.transform.SetParent(parent);
 			field.Init(size);
-			
+
 			foreach (var gridPos in field.ItemsGrid)
 			{
-				var fieldCell = _diContainer.Resolve<FieldCell>();
-				fieldCell.transform.SetParent(field.transform);
-				fieldCell.transform.localPosition = gridPos.AsVector3();
-				fieldCell.FieldPos = gridPos;
-				field.SetFieldCell(fieldCell, gridPos);
+				var cellPrefab = _diContainer.Resolve<FieldCell>();
+				var pos = field.transform.position + gridPos.AsVector3();
+				var cell = _instantiator
+					.InstantiatePrefabForComponent<FieldCell>(cellPrefab, pos,
+						Quaternion.identity, field.transform);
+
+				cell.FieldPos = gridPos;
+				field.SetFieldCell(cell, gridPos);
 			}
-			
+
 			return field;
 		}
 	}

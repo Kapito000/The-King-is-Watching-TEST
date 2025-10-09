@@ -9,39 +9,47 @@ using Zenject;
 public class GameBootstrapper : MonoBehaviour
 {
 	[SerializeField] Vector2Int _startGridSize = new(8, 8);
+	[SerializeField] Vector2Int _freeItemsGridSize = new(6, 9);
 	[Space]
 	[SerializeField] FieldCell _fieldCellPrefab;
 	[Space]
 	[SerializeField] Item _itemPrefab;
 	[SerializeField] ItemCell _itemCell;
-	[SerializeField] Transform _freeItemsParent;
 	[SerializeField] ItemDataCollection _itemDataCollection;
 
 	[Inject(Id = InjectId.GameFieldParent)]
-	Transform _fieldParent;
+	Transform _gameFieldParent;
+	[Inject(Id = InjectId.FreeItemsFieldParent)]
+	Transform _fireeItemsFieldParent;
 	[Inject] ITetrisFieldFactory _fieldFactory;
 
-	FieldGrid _grid;
+	ITetrisField _gameField;
+	ITetrisField _freeItemsField;
 
 	void Awake()
 	{
 		Assert.IsNotNull(_itemCell);
 		Assert.IsNotNull(_itemPrefab);
 		Assert.IsNotNull(_fieldCellPrefab);
-		Assert.IsNotNull(_freeItemsParent);
 		Assert.IsNotNull(_itemDataCollection);
 	}
 
 	void Start()
 	{
 		CreateField();
+		CreateFreeItemsField();
 		CreateItems();
 	}
 
-
 	void CreateField()
 	{
-		var gameField = _fieldFactory.CreateField(_fieldParent, _startGridSize);
+		_gameField = _fieldFactory.CreateField(_gameFieldParent, _startGridSize);
+	}
+
+	void CreateFreeItemsField()
+	{
+		_freeItemsField =
+			_fieldFactory.CreateField(_fireeItemsFieldParent, _freeItemsGridSize);
 	}
 
 	void CreateItems()
@@ -52,7 +60,7 @@ public class GameBootstrapper : MonoBehaviour
 		var x = 0;
 		var y = -1;
 		const int row = 3;
-		var startPos = _freeItemsParent.position;
+		var startPos = _fireeItemsFieldParent.position;
 
 		foreach (var itemData in _itemDataCollection)
 		{
@@ -64,11 +72,12 @@ public class GameBootstrapper : MonoBehaviour
 
 			var newPos = startPos + xOffset * x + yOffset * y;
 
-			var item = Instantiate(_itemPrefab, newPos, Quaternion.identity, new InstantiateParameters()
-			{
-				parent = _freeItemsParent,
-				worldSpace = true,
-			});
+			var item = Instantiate(_itemPrefab, newPos, Quaternion.identity,
+				new InstantiateParameters()
+				{
+					parent = _fireeItemsFieldParent,
+					worldSpace = true,
+				});
 
 			x++;
 
@@ -76,11 +85,12 @@ public class GameBootstrapper : MonoBehaviour
 
 			foreach (var cellPos in item.Cells)
 			{
-				var itemCell = Instantiate(_itemCell, cellPos.AsVector3(), Quaternion.identity, new InstantiateParameters()
-					{
-						parent = item.transform,
-						worldSpace = false,
-					})
+				var itemCell = Instantiate(_itemCell, cellPos.AsVector3(),
+						Quaternion.identity, new InstantiateParameters()
+						{
+							parent = item.transform,
+							worldSpace = false,
+						})
 					.With(ic => ic.SetItem(item));
 
 				item.AddItemCell(itemCell);

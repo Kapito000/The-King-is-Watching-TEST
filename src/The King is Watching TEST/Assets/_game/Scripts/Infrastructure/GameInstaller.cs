@@ -1,53 +1,47 @@
 ﻿using TetrisField;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 using Zenject;
 
 namespace Infrastructure
 {
 	public sealed class GameInstaller : MonoInstaller
 	{
-		[Header("Tetris field")]
-		[SerializeField] Transform _fieldParent;
-		[SerializeField] Field _tetrisFieldPrefab;
+		[Header("Free items field")]
+		[SerializeField] Transform _freeItemsFieldParent;
+		[Header("Game field")]
+		[SerializeField] TetrisField.TetrisField tetrisTetrisFieldPrefab;
+		[SerializeField] Transform _gameFieldParent;
 		[SerializeField] FieldCell _tetrisFieldCellPrefab;
 
 		public override void InstallBindings()
 		{
-			BindDiContainer();
 			BindTetrisField();
-			BindGameFieldParent();
+			BindGameFieldsParents();
 			BindTetrisFieldFactory();
 		}
 
-		void BindGameFieldParent()
+		void BindGameFieldsParents()
 		{
 			Container
-				.BindInstance(_fieldParent)
+				.BindInstance(_gameFieldParent)
 				.WithId(InjectId.GameFieldParent);
-		}
-
-		void BindDiContainer()
-		{
 			Container
-				.Bind<DiContainer>()
-				.FromInstance(Container)
-				.AsSingle();
+				.BindInstance(_freeItemsFieldParent)
+				.WithId(InjectId.FreeItemsFieldParent);
 		}
 
 		void BindTetrisField()
 		{
-			Assert.IsNotNull(_tetrisFieldPrefab);
 			Assert.IsNotNull(_tetrisFieldCellPrefab);
 
 			Container
-				.Bind<Field>()
-				.FromComponentInNewPrefab(_tetrisFieldPrefab)
+				.Bind<TetrisField.TetrisField>()
+				.FromInstance(tetrisTetrisFieldPrefab)
 				.AsTransient();
 
 			Container.Bind<FieldCell>()
-				.FromComponentInNewPrefab(_tetrisFieldCellPrefab)
+				.FromInstance(_tetrisFieldCellPrefab)
 				.AsTransient();
 		}
 
