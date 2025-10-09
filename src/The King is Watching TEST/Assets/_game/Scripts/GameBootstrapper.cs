@@ -1,40 +1,35 @@
 using Extensions;
-using Map;
+using Infrastructure;
 using StaticData;
 using TetrisField;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
 
-public class GameManager : MonoBehaviour, IInitializable
+public class GameBootstrapper : MonoBehaviour
 {
 	[SerializeField] Vector2Int _startGridSize = new(8, 8);
 	[Space]
 	[SerializeField] FieldCell _fieldCellPrefab;
-	[SerializeField] Transform _fieldParent;
 	[Space]
 	[SerializeField] Item _itemPrefab;
 	[SerializeField] ItemCell _itemCell;
 	[SerializeField] Transform _freeItemsParent;
 	[SerializeField] ItemDataCollection _itemDataCollection;
 
+	[Inject(Id = InjectId.GameFieldParent)]
+	Transform _fieldParent;
+	[Inject] ITetrisFieldFactory _fieldFactory;
+
 	FieldGrid _grid;
 
-	public void Initialize()
-	{
-		
-	}
-	
 	void Awake()
 	{
 		Assert.IsNotNull(_itemCell);
 		Assert.IsNotNull(_itemPrefab);
 		Assert.IsNotNull(_fieldCellPrefab);
-		Assert.IsNotNull(_fieldParent);
 		Assert.IsNotNull(_freeItemsParent);
 		Assert.IsNotNull(_itemDataCollection);
-		
-		
 	}
 
 	void Start()
@@ -43,52 +38,10 @@ public class GameManager : MonoBehaviour, IInitializable
 		CreateItems();
 	}
 
-	public bool TryPlace(IFieldCell fieldCell, IItem item)
-	{
-		foreach (var itemCellPos in item.Cells)
-		{
-			var gridCell = fieldCell.FieldPos + itemCellPos;
-
-			if (_grid.HasCell(gridCell) == false)
-				return false;
-
-			if (_grid.ContainsItem(gridCell))
-				return false;
-		}
-
-		item.MoveTo(fieldCell.Pos);
-		item.PutToField();
-
-		foreach (var itemCellPos in item.Cells)
-		{
-			var gridCell = fieldCell.FieldPos + itemCellPos;
-			var x = gridCell.x;
-			var y = gridCell.y;
-			_grid[x, y].Place(item);
-		}
-
-		return true;
-	}
 
 	void CreateField()
 	{
-		_grid = new FieldGrid(_startGridSize.x, _startGridSize.y);
-		
-		foreach (var gridPos in _grid)
-		{
-			var fieldCell = Instantiate(_fieldCellPrefab, gridPos.AsVector3(), Quaternion.identity,
-				new InstantiateParameters()
-				{
-					parent = _fieldParent,
-					worldSpace = false,
-				});
-			fieldCell.FieldPos = gridPos;
-
-			if (_grid.TrySet(fieldCell, gridPos.x, gridPos.y) == false)
-			{
-				Debug.LogError($"Can't set field cell: {gridPos}");
-			}
-		}
+		var gameField = _fieldFactory.CreateField(_fieldParent, _startGridSize);
 	}
 
 	void CreateItems()

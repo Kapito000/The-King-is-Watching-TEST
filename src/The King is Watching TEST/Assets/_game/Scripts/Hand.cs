@@ -1,18 +1,19 @@
 using TetrisField;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 
 public sealed class Hand : MonoBehaviour
 {
 	[SerializeField] bool _isCaptured;
-	[SerializeField] GameManager _gameManager;
+	[FormerlySerializedAs("gameBootstraper")] [FormerlySerializedAs("_gameManager")] [SerializeField] GameBootstrapper gameBootstrapper;
 	[SerializeField] ItemInputController _inputController;
 
 	IItem _captured;
 
 	void Awake()
 	{
-		Assert.IsNotNull(_gameManager);
+		Assert.IsNotNull(gameBootstrapper);
 		Assert.IsNotNull(_inputController);
 
 		_inputController.Put += OnPut;
@@ -56,8 +57,8 @@ public sealed class Hand : MonoBehaviour
 		if (_isCaptured == false)
 			return;
 
-		if (_gameManager.TryPlace(fieldCell, _captured) == false)
-			return;
+		// if (_gameManager.TryPlace(fieldCell, _captured) == false)
+			// return;
 	
 		DropItem();
 	}

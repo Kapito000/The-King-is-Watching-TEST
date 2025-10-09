@@ -8,7 +8,11 @@ namespace TetrisField
 	public sealed class Field : MonoBehaviour, ITetrisField
 	{
 		Grid<IItem> _itemsGrid;
+		Grid<IFieldCell> _fieldCellGrid;
+		
 		List<IItem> _items = new();
+		
+		public IGrid<IItem> ItemsGrid => _itemsGrid;
 
 		public void Init(Vector2Int size)
 		{
@@ -50,6 +54,11 @@ namespace TetrisField
 				_itemsGrid[v.x, v.y] = null;
 			
 			_items.Remove(item);
+		}
+
+		public void SetFieldCell(IFieldCell cell, Vector2Int pos)
+		{
+			_fieldCellGrid[pos.x, pos.y] = cell;
 		}
 	}
 }
