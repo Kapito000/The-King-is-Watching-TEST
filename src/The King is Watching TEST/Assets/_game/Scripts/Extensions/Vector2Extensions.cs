@@ -15,5 +15,8 @@ namespace Extensions
 
 		public static Vector2Int Rotate270(this Vector2Int v) =>
 			new(-v.y, v.x);
+
+		public static (int x, int y) Deconstruct(this Vector2Int pos) => 
+			(pos.x, pos.y);
 	}
 }

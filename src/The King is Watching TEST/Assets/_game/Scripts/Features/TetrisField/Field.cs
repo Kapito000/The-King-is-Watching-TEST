@@ -1,0 +1,55 @@
+﻿using System.Collections.Generic;
+using Extensions;
+using Map;
+using UnityEngine;
+
+namespace TetrisField
+{
+	public sealed class Field : MonoBehaviour, ITetrisField
+	{
+		Grid<IItem> _itemsGrid;
+		List<IItem> _items = new();
+
+		public void Init(Vector2Int size)
+		{
+			_itemsGrid = new Grid<IItem>(size.x, size.y);
+		}
+
+		public bool CanPutItem(Vector2Int pos, IItem item)
+		{
+			var (x, y) = pos.Deconstruct();
+
+			foreach (var itemCellPos in item.Cells)
+			{
+				var gridCell = pos + itemCellPos;
+
+				if (_itemsGrid.HasCell(gridCell) == false)
+					return false;
+
+				if (_itemsGrid[x, y] == null)
+					return false;
+			}
+
+			return true;
+		}
+
+		public void PutItem(IItem item, Vector2Int pos)
+		{
+			foreach (var itemCellPos in item.Cells)
+			{
+				var (x, y) = (pos + itemCellPos).Deconstruct();
+				_itemsGrid[x, y] = item;
+			}
+
+			_items.Add(item);
+		}
+
+		public void ExtractItem(IItem item)
+		{
+			foreach (var v in _itemsGrid) 
+				_itemsGrid[v.x, v.y] = null;
+			
+			_items.Remove(item);
+		}
+	}
+}

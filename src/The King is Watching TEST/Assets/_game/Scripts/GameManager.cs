@@ -1,10 +1,12 @@
 using Extensions;
 using Map;
 using StaticData;
+using TetrisField;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Zenject;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviour, IInitializable
 {
 	[SerializeField] Vector2Int _startGridSize = new(8, 8);
 	[Space]
@@ -18,6 +20,11 @@ public class GameManager : MonoBehaviour
 
 	FieldGrid _grid;
 
+	public void Initialize()
+	{
+		
+	}
+	
 	void Awake()
 	{
 		Assert.IsNotNull(_itemCell);

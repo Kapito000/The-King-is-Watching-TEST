@@ -16,7 +16,11 @@ namespace Map
 			_cells = new T[xSize, ySize];
 		}
 
-		public T this[int x, int y] => _cells[x, y];
+		public T this[int x, int y]
+		{
+			get => _cells[x, y];
+			set => _cells[x, y] = value;
+		}
 
 		public bool HasCell(int x, int y) =>
 			0 <= x && x < Size.x &&
