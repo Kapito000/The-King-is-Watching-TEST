@@ -33,7 +33,15 @@ public sealed class Item : MonoBehaviour, IItem
 		foreach (var x in _itemCells)
 		{
 			x.SetLayer(Constant.SortingLayers.Item);
-			x.EnableCollider(true);
+		}
+	}
+
+	public void PutToField()
+	{
+		foreach (var x in _itemCells)
+		{
+			x.SetLayer(Constant.SortingLayers.Item);
+			x.EnableCollider(false);
 		}
 	}
 

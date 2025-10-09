@@ -11,6 +11,7 @@ public sealed class ItemInputController : MonoBehaviour
 	public event Action Rotate;
 	public event Action<IItem> Taked;
 	public event Action<IFieldCell> Put;
+	public event Action<IItem, IFieldCell> GetedItemFromField;
 
 	void OnPos(InputValue value)
 	{
@@ -41,6 +42,19 @@ public sealed class ItemInputController : MonoBehaviour
 			return;
 
 		Put?.Invoke(fieldCell);
+	}
+
+	void OnGetItemFromField()
+	{
+		Vector2 worldPos = Camera().ScreenToWorldPoint(ScreenPos);
+		RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+
+		if (hit.collider == null ||
+		    hit.collider.TryGetComponent<IFieldCell>(out var fieldCell) == false ||
+		    fieldCell.HasItem == false)
+			return;
+
+		GetedItemFromField?.Invoke(fieldCell.Item, fieldCell);
 	}
 
 	void OnRotate()

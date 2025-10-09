@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
 		Assert.IsNotNull(_fieldParent);
 		Assert.IsNotNull(_freeItemsParent);
 		Assert.IsNotNull(_itemDataCollection);
+		
+		
 	}
 
 	void Start()
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
 		}
 
 		item.MoveTo(fieldCell.Pos);
+		item.PutToField();
 
 		foreach (var itemCellPos in item.Cells)
 		{

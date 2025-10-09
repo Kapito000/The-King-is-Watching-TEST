@@ -25,13 +25,11 @@ public sealed class FieldCell : MonoBehaviour, IFieldCell
 	{
 		HasItem = true;
 		_item = item;
-		_collider.enabled = false;
 	}
 
 	public IItem ExtractItem()
 	{
 		HasItem = false;
-		_collider.enabled = true;
 		return _item;
 	}
 }
