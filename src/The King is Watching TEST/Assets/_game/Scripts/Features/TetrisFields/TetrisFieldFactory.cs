@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-namespace TetrisField
+namespace TetrisFields
 {
 	public sealed class TetrisFieldFactory : ITetrisFieldFactory
 	{

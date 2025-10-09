@@ -3,7 +3,7 @@ using Extensions;
 using Map;
 using UnityEngine;
 
-namespace TetrisField
+namespace TetrisFields
 {
 	public sealed class TetrisField : MonoBehaviour, ITetrisField
 	{

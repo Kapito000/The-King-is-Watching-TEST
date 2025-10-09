@@ -1,7 +1,7 @@
 ﻿using Map;
 using UnityEngine;
 
-namespace TetrisField
+namespace TetrisFields
 {
 	public sealed class FieldGrid : Grid<IFieldCell>
 	{

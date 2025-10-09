@@ -1,4 +1,4 @@
-﻿using TetrisField;
+﻿using TetrisFields;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -10,7 +10,7 @@ namespace Infrastructure
 		[Header("Free items field")]
 		[SerializeField] Transform _freeItemsFieldParent;
 		[Header("Game field")]
-		[SerializeField] TetrisField.TetrisField tetrisTetrisFieldPrefab;
+		[SerializeField] TetrisField tetrisTetrisFieldPrefab;
 		[SerializeField] Transform _gameFieldParent;
 		[SerializeField] FieldCell _tetrisFieldCellPrefab;
 
@@ -36,7 +36,7 @@ namespace Infrastructure
 			Assert.IsNotNull(_tetrisFieldCellPrefab);
 
 			Container
-				.Bind<TetrisField.TetrisField>()
+				.Bind<TetrisField>()
 				.FromInstance(tetrisTetrisFieldPrefab)
 				.AsTransient();
 

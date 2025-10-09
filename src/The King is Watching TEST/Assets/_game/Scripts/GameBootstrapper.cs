@@ -1,7 +1,7 @@
 using Extensions;
 using Infrastructure;
 using StaticData;
-using TetrisField;
+using TetrisFields;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -38,7 +38,7 @@ public class GameBootstrapper : MonoBehaviour
 	{
 		CreateField();
 		CreateFreeItemsField();
-		CreateItems();
+		CreateFreeItems();
 	}
 
 	void CreateField()
@@ -52,7 +52,7 @@ public class GameBootstrapper : MonoBehaviour
 			_fieldFactory.CreateField(_fireeItemsFieldParent, _freeItemsGridSize);
 	}
 
-	void CreateItems()
+	void CreateFreeItems()
 	{
 		var xOffset = Vector3.right * 2.5f;
 		var yOffset = Vector3.down * 3;
