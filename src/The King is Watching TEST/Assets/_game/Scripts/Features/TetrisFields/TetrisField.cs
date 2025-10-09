@@ -10,9 +10,9 @@ namespace TetrisFields
 	{
 		Grid<IItem> _itemsGrid;
 		Grid<IFieldCell> _fieldCellGrid;
-		
+
 		List<IItem> _items = new();
-		
+
 		public IGrid<IItem> ItemsGrid => _itemsGrid;
 
 		public void Init(Vector2Int size)
@@ -47,14 +47,15 @@ namespace TetrisFields
 				_itemsGrid[x, y] = item;
 			}
 
+			item.ReplaceTo(transform.position + pos.AsVector3());
 			_items.Add(item);
 		}
 
 		public void ExtractItem(IItem item)
 		{
-			foreach (var v in _itemsGrid) 
+			foreach (var v in _itemsGrid)
 				_itemsGrid[v.x, v.y] = null;
-			
+
 			_items.Remove(item);
 		}
 

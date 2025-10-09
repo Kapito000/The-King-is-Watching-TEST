@@ -34,7 +34,7 @@ public sealed class Hand : MonoBehaviour
 		if (_isCaptured == false)
 			return;
 
-		_captured.MoveTo(_inputController.WorldPos);
+		// _captured.MoveTo(_inputController.WorldPos);
 	}
 
 	void OnTaked(IItem item)
@@ -50,7 +50,7 @@ public sealed class Hand : MonoBehaviour
 		if (_isCaptured)
 			return;
 
-		_captured.Rotate();
+		// _captured.Rotate();
 	}
 
 	void OnPut(IFieldCell fieldCell)
@@ -67,13 +67,13 @@ public sealed class Hand : MonoBehaviour
 	void CaptureItem(IItem item)
 	{
 		_captured = item;
-		_captured.Capture();
+		// _captured.Capture();
 		_isCaptured = true;
 	}
 
 	void DropItem()
 	{
-		_captured.Uncapture();
+		// _captured.Uncapture();
 		_isCaptured = false;
 	}
 }

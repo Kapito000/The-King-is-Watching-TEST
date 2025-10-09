@@ -4,36 +4,28 @@ using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
 using UnityEngine;
-using UnityEngine.Assertions;
 using Zenject;
 
 public class GameBootstrapper : MonoBehaviour
 {
 	[SerializeField] Vector2Int _startGridSize = new(8, 8);
+	[Space]
+	[SerializeField] int _freeAssetCount = 6;
 	[SerializeField] Vector2Int _freeItemsGridSize = new(6, 9);
-	[Space]
-	[SerializeField] FieldCell _fieldCellPrefab;
-	[Space]
-	[SerializeField] Item _itemPrefab;
-	[SerializeField] ItemCell _itemCell;
-	[SerializeField] ItemDataCollection _itemDataCollection;
 
 	[Inject(Id = InjectId.GameFieldParent)]
 	Transform _gameFieldParent;
 	[Inject(Id = InjectId.FreeItemsFieldParent)]
 	Transform _fireeItemsFieldParent;
+	[Inject(Id = InjectId.ItemsParent)]
+	Transform _itemsParent;
+
+	[Inject] IItemFactory _itemFactory;
 	[Inject] ITetrisFieldFactory _fieldFactory;
+	[Inject] IItemDataCollection _itemDataCollection;
 
 	ITetrisField _gameField;
 	ITetrisField _freeItemsField;
-
-	void Awake()
-	{
-		Assert.IsNotNull(_itemCell);
-		Assert.IsNotNull(_itemPrefab);
-		Assert.IsNotNull(_fieldCellPrefab);
-		Assert.IsNotNull(_itemDataCollection);
-	}
 
 	void Start()
 	{
@@ -55,47 +47,20 @@ public class GameBootstrapper : MonoBehaviour
 
 	void CreateFreeItems()
 	{
-		var xOffset = Vector3.right * 2.5f;
-		var yOffset = Vector3.down * 3;
+		const int gridStep = 3;
 
-		var x = 0;
-		var y = -1;
-		const int row = 3;
-		var startPos = _fireeItemsFieldParent.position;
-
-		foreach (var itemData in _itemDataCollection)
+		for (int i = 0; i < _freeAssetCount; i++)
 		{
-			if (x >= row)
-				x = 0;
+			var x = i % 2;
+			var y = i % 3;
+			var xOffset = x * gridStep;
+			var yOffset = y * gridStep;
 
-			if (x == 0)
-				y++;
+			var gridPos = new Vector2Int(xOffset, yOffset);
+			var itemData = _itemDataCollection.Items.Random();
+			var item = _itemFactory.CreateItem(_itemsParent, itemData.Cells);
 
-			var newPos = startPos + xOffset * x + yOffset * y;
-
-			var item = Instantiate(_itemPrefab, newPos, Quaternion.identity,
-				new InstantiateParameters()
-				{
-					parent = _fireeItemsFieldParent,
-					worldSpace = true,
-				});
-
-			x++;
-
-			item.Cells = itemData.Cells;
-
-			foreach (var cellPos in item.Cells)
-			{
-				var itemCell = Instantiate(_itemCell, cellPos.AsVector3(),
-						Quaternion.identity, new InstantiateParameters()
-						{
-							parent = item.transform,
-							worldSpace = false,
-						})
-					.With(ic => ic.SetItem(item));
-
-				item.AddItemCell(itemCell);
-			}
+			_freeItemsField.PutItem(item, gridPos);
 		}
 	}
 }

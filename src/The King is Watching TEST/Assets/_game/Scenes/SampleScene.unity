@@ -150,6 +150,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &338332854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 338332855}
+  m_Layer: 0
+  m_Name: Items
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &338332855
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338332854}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -472,9 +503,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _freeItemsFieldParent: {fileID: 1872757401}
-  tetrisTetrisFieldPrefab: {fileID: 2008019531645296954, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
   _gameFieldParent: {fileID: 2054731}
   _tetrisFieldCellPrefab: {fileID: 4324012852246356452, guid: d6784fadea381f542b2c7313e0d42a69, type: 3}
+  tetrisTetrisFieldPrefab: {fileID: 2008019531645296954, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
+  _itemPrefab: {fileID: 5463783486583246022, guid: e6f5ace3b90d0f744965805b85633a18, type: 3}
+  _itemCellPrefab: {fileID: 4773259130505194909, guid: 28a956e8022f19042beeba49353086b2, type: 3}
+  _itemsParent: {fileID: 338332855}
+  _itemDataCollection: {fileID: 11400000, guid: 2a6eb4daeb299804ab31ecd1abecebab, type: 2}
 --- !u!4 &1715969837
 Transform:
   m_ObjectHideFlags: 0
@@ -647,11 +682,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startGridSize: {x: 8, y: 8}
+  _freeAssetCount: 6
   _freeItemsGridSize: {x: 6, y: 9}
-  _fieldCellPrefab: {fileID: 4324012852246356452, guid: d6784fadea381f542b2c7313e0d42a69, type: 3}
-  _itemPrefab: {fileID: 5463783486583246022, guid: e6f5ace3b90d0f744965805b85633a18, type: 3}
-  _itemCell: {fileID: 4773259130505194909, guid: 28a956e8022f19042beeba49353086b2, type: 3}
-  _itemDataCollection: {fileID: 11400000, guid: 2a6eb4daeb299804ab31ecd1abecebab, type: 2}
 --- !u!4 &2127005755
 Transform:
   m_ObjectHideFlags: 0
@@ -667,63 +699,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &8547023384164795470
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -7.025519
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1.5842929
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0.014116665
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5280582038320296945, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5981395766819227944, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
-      propertyPath: m_Name
-      value: Tetris field
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 70711b2aba3c04e4a852257efdbcbf07, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -737,4 +712,4 @@ SceneRoots:
   - {fileID: 618222040}
   - {fileID: 2054731}
   - {fileID: 1872757401}
-  - {fileID: 8547023384164795470}
+  - {fileID: 338332855}

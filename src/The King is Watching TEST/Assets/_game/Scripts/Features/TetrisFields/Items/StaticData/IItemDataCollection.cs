@@ -3,5 +3,7 @@
 namespace TetrisFields.Items.StaticData
 {
 	public interface IItemDataCollection : IEnumerable<IItemData>
-	{ }
+	{
+		ItemData[] Items { get; }
+	}
 }

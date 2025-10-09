@@ -16,6 +16,11 @@ namespace TetrisFields.Items
 			set => _cells = value.Clone() as Vector2Int[];
 		}
 
+		public void ReplaceTo(Vector2 pos)
+		{
+			transform.position = pos;
+		}
+
 		public void AddItemCell(ItemCell itemCell)
 		{
 			_itemCells.Add(itemCell);
@@ -45,11 +50,6 @@ namespace TetrisFields.Items
 				x.SetLayer(Constant.SortingLayers.Item);
 				x.EnableCollider(false);
 			}
-		}
-
-		public void MoveTo(Vector2 pos)
-		{
-			transform.position = pos;
 		}
 
 		public void Rotate()

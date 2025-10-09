@@ -2,6 +2,7 @@
 {
 	public enum InjectId
 	{
+		ItemsParent,
 		GameFieldParent,
 		FreeItemsFieldParent,
 	}

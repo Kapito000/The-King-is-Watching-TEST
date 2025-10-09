@@ -9,7 +9,9 @@ namespace TetrisFields.Items.StaticData
 	public sealed class ItemDataCollection : ScriptableObject, IItemDataCollection
 	{
 		[SerializeField] ItemData[] _items;
-
+		
+		public ItemData[] Items => _items;
+		
 		public IEnumerator<IItemData> GetEnumerator()
 		{
 			foreach (var item in _items)

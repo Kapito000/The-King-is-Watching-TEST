@@ -4,11 +4,7 @@ namespace TetrisFields.Items
 {
 	public interface IItem
 	{
-		void Capture();
-		void Uncapture();
-		void MoveTo(Vector2 pos);
-		void Rotate();
 		Vector2Int[] Cells { get; set; }
-		void PutToField();
+		void ReplaceTo(Vector2 pos);
 	}
 }
