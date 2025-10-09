@@ -2,9 +2,9 @@
 
 namespace Map
 {
-	public sealed class ClassGrid<T> : Grid<T> where T : class
+	public sealed class FieldGrid : Grid<IFieldCell>
 	{
-		public ClassGrid(int xSize, int ySize) : base(xSize, ySize)
+		public FieldGrid(int xSize, int ySize) : base(xSize, ySize)
 		{ }
 
 		public bool ContainsItem(int x, int y)
@@ -12,7 +12,7 @@ namespace Map
 			if (HasCell(x, y) == false)
 				return false;
 
-			return _cells[x, y] != null;
+			return _cells[x, y].HasItem;
 		}
 
 		public bool ContainsItem(Vector2Int pos) =>

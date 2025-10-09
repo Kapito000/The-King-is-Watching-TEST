@@ -8,7 +8,6 @@ namespace Map
 	public class Grid<T> : IGrid<T>
 	{
 		protected readonly T[,] _cells;
-
 		public Vector2Int Size { get; }
 
 		public Grid(int xSize, int ySize)
@@ -16,6 +15,8 @@ namespace Map
 			Size = new Vector2Int(xSize, ySize);
 			_cells = new T[xSize, ySize];
 		}
+
+		public T this[int x, int y] => _cells[x, y];
 
 		public bool HasCell(int x, int y) =>
 			0 <= x && x < Size.x &&

@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] Transform _freeItemsParent;
 	[SerializeField] ItemDataCollection _itemDataCollection;
 
-	ClassGrid<IItem> _grid;
+	FieldGrid _grid;
 
 	void Awake()
 	{
@@ -34,11 +34,11 @@ public class GameManager : MonoBehaviour
 		CreateItems();
 	}
 
-	public bool TryPlace(Vector2Int pos, IItem item)
+	public bool TryPlace(IFieldCell fieldCell, IItem item)
 	{
 		foreach (var itemCellPos in item.Cells)
 		{
-			var gridCell = pos + itemCellPos;
+			var gridCell = fieldCell.FieldPos + itemCellPos;
 
 			if (_grid.HasCell(gridCell) == false)
 				return false;
@@ -46,15 +46,24 @@ public class GameManager : MonoBehaviour
 			if (_grid.ContainsItem(gridCell))
 				return false;
 		}
-		
-		Debug.Log("Can place an item.");
+
+		item.MoveTo(fieldCell.Pos);
+
+		foreach (var itemCellPos in item.Cells)
+		{
+			var gridCell = fieldCell.FieldPos + itemCellPos;
+			var x = gridCell.x;
+			var y = gridCell.y;
+			_grid[x, y].Place(item);
+		}
 
 		return true;
 	}
 
 	void CreateField()
 	{
-		_grid = new ClassGrid<IItem>(_startGridSize.x, _startGridSize.y);
+		_grid = new FieldGrid(_startGridSize.x, _startGridSize.y);
+		
 		foreach (var gridPos in _grid)
 		{
 			var fieldCell = Instantiate(_fieldCellPrefab, gridPos.AsVector3(), Quaternion.identity,
@@ -63,7 +72,12 @@ public class GameManager : MonoBehaviour
 					parent = _fieldParent,
 					worldSpace = false,
 				});
-			fieldCell.Pos = gridPos;
+			fieldCell.FieldPos = gridPos;
+
+			if (_grid.TrySet(fieldCell, gridPos.x, gridPos.y) == false)
+			{
+				Debug.LogError($"Can't set field cell: {gridPos}");
+			}
 		}
 	}
 

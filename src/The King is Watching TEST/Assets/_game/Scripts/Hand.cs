@@ -55,8 +55,10 @@ public sealed class Hand : MonoBehaviour
 		if (_isCaptured == false)
 			return;
 
-		if (_gameManager.TryPlace(fieldCell.Pos, _captured) == false)
-		{ }
+		if (_gameManager.TryPlace(fieldCell, _captured) == false)
+			return;
+	
+		DropItem();
 	}
 
 	void CaptureItem(IItem item)
