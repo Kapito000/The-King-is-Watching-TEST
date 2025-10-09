@@ -4,6 +4,7 @@ using UnityEngine.Assertions;
 public sealed class FieldCell : MonoBehaviour, IFieldCell
 {
 	IItem _item;
+	public IItem Item => _item;
 
 	[SerializeField] Collider2D _collider;
 
