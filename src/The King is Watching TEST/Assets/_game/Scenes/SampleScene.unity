@@ -328,7 +328,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1138120337}
   m_Layer: 0
-  m_Name: Free items
+  m_Name: Items
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -379,6 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isCaptured: 0
+  _gameManager: {fileID: 2127005754}
   _inputController: {fileID: 1593775016}
 --- !u!4 &1373865808
 Transform:
@@ -425,7 +426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8357f06884884539a78c7a83e54de000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Pos>k__BackingField: {x: 0, y: 0}
+  <WorldPos>k__BackingField: {x: 0, y: 0}
+  <ScreenPos>k__BackingField: {x: 0, y: 0}
 --- !u!114 &1593775017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,7 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startGridSize: {x: 8, y: 8}
-  _cellPrefab: {fileID: 6455040203833175200, guid: d6784fadea381f542b2c7313e0d42a69, type: 3}
+  _fieldCellPrefab: {fileID: 4324012852246356452, guid: d6784fadea381f542b2c7313e0d42a69, type: 3}
   _fieldParent: {fileID: 2054731}
   _itemPrefab: {fileID: 5463783486583246022, guid: e6f5ace3b90d0f744965805b85633a18, type: 3}
   _itemCell: {fileID: 4773259130505194909, guid: 28a956e8022f19042beeba49353086b2, type: 3}

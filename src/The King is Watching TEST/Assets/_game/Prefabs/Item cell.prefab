@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _item: {fileID: 0}
+  _collider: {fileID: 1719542880653869288}
   _renderer: {fileID: 4915799117032742590}
 --- !u!1 &7167745268500759600
 GameObject:

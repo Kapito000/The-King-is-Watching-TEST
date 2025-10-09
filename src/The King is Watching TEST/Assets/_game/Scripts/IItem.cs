@@ -6,4 +6,5 @@ public interface IItem
 	void Uncapture();
 	void MoveTo(Vector2 pos);
 	void Rotate();
+	Vector2Int[] Cells { get; set; }
 }

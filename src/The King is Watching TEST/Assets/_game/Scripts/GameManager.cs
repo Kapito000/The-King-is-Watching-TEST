@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 {
 	[SerializeField] Vector2Int _startGridSize = new(8, 8);
 	[Space]
-	[SerializeField] GameObject _cellPrefab;
+	[SerializeField] FieldCell _fieldCellPrefab;
 	[SerializeField] Transform _fieldParent;
 	[Space]
 	[SerializeField] Item _itemPrefab;
@@ -16,13 +16,13 @@ public class GameManager : MonoBehaviour
 	[SerializeField] Transform _freeItemsParent;
 	[SerializeField] ItemDataCollection _itemDataCollection;
 
-	IGrid<IItem> _grid;
+	ClassGrid<IItem> _grid;
 
 	void Awake()
 	{
 		Assert.IsNotNull(_itemCell);
 		Assert.IsNotNull(_itemPrefab);
-		Assert.IsNotNull(_cellPrefab);
+		Assert.IsNotNull(_fieldCellPrefab);
 		Assert.IsNotNull(_fieldParent);
 		Assert.IsNotNull(_freeItemsParent);
 		Assert.IsNotNull(_itemDataCollection);
@@ -34,16 +34,36 @@ public class GameManager : MonoBehaviour
 		CreateItems();
 	}
 
+	public bool TryPlace(Vector2Int pos, IItem item)
+	{
+		foreach (var itemCellPos in item.Cells)
+		{
+			var gridCell = pos + itemCellPos;
+
+			if (_grid.HasCell(gridCell) == false)
+				return false;
+
+			if (_grid.ContainsItem(gridCell))
+				return false;
+		}
+		
+		Debug.Log("Can place an item.");
+
+		return true;
+	}
+
 	void CreateField()
 	{
-		_grid = new BaseGrid<IItem>(_startGridSize.x, _startGridSize.y);
+		_grid = new ClassGrid<IItem>(_startGridSize.x, _startGridSize.y);
 		foreach (var gridPos in _grid)
 		{
-			var cell = Instantiate(_cellPrefab, gridPos.AsVector3(), Quaternion.identity, new InstantiateParameters()
-			{
-				parent = _fieldParent,
-				worldSpace = false,
-			});
+			var fieldCell = Instantiate(_fieldCellPrefab, gridPos.AsVector3(), Quaternion.identity,
+				new InstantiateParameters()
+				{
+					parent = _fieldParent,
+					worldSpace = false,
+				});
+			fieldCell.Pos = gridPos;
 		}
 	}
 
@@ -85,7 +105,7 @@ public class GameManager : MonoBehaviour
 						worldSpace = false,
 					})
 					.With(ic => ic.SetItem(item));
-				
+
 				item.AddItemCell(itemCell);
 			}
 		}

@@ -10,6 +10,7 @@ public sealed class ItemInputController : MonoBehaviour
 
 	public event Action Rotate;
 	public event Action<IItem> Taked;
+	public event Action<IFieldCell> Put;
 
 	void OnPos(InputValue value)
 	{
@@ -28,6 +29,18 @@ public sealed class ItemInputController : MonoBehaviour
 			return;
 
 		Taked?.Invoke(itemCell.Item);
+	}
+
+	void OnPut()
+	{
+		Vector2 worldPos = Camera().ScreenToWorldPoint(ScreenPos);
+		RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+
+		if (hit.collider == null ||
+		    hit.collider.TryGetComponent<IFieldCell>(out var fieldCell) == false)
+			return;
+
+		Put?.Invoke(fieldCell);
 	}
 
 	void OnRotate()

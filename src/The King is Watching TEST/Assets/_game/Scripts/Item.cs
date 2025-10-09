@@ -21,12 +21,20 @@ public sealed class Item : MonoBehaviour, IItem
 
 	public void Capture()
 	{
-		_itemCells.ForEach(x => x.SetLayer(Constant.SortingLayers.CapturedItem));
+		foreach (var x in _itemCells)
+		{
+			x.SetLayer(Constant.SortingLayers.CapturedItem);
+			x.EnableCollider(false);
+		}
 	}
 
 	public void Uncapture()
 	{
-		_itemCells.ForEach(x => x.SetLayer(Constant.SortingLayers.Item));
+		foreach (var x in _itemCells)
+		{
+			x.SetLayer(Constant.SortingLayers.Item);
+			x.EnableCollider(true);
+		}
 	}
 
 	public void MoveTo(Vector2 pos)

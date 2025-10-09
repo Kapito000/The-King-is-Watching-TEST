@@ -5,25 +5,25 @@ using UnityEngine;
 
 namespace Map
 {
-	public abstract class Grid<T> : IGrid<T>
+	public class Grid<T> : IGrid<T>
 	{
-		readonly T[,] _cells;
+		protected readonly T[,] _cells;
 
 		public Vector2Int Size { get; }
 
-		protected Grid(int xSize, int ySize)
+		public Grid(int xSize, int ySize)
 		{
 			Size = new Vector2Int(xSize, ySize);
 			_cells = new T[xSize, ySize];
 		}
 
-		public bool Has(int x, int y) =>
+		public bool HasCell(int x, int y) =>
 			0 <= x && x < Size.x &&
 			0 <= y && y < Size.y;
 
 		public bool TrySet(T value, int x, int y)
 		{
-			if (Has(x, y) == false)
+			if (HasCell(x, y) == false)
 				return false;
 
 			_cells[x, y] = value;
@@ -32,7 +32,7 @@ namespace Map
 
 		public bool TryGet(int x, int y, out T value)
 		{
-			if (Has(x, y) == false)
+			if (HasCell(x, y) == false)
 			{
 				value = default;
 				return false;

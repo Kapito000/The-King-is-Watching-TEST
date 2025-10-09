@@ -7,7 +7,7 @@ namespace Map
 	public interface IGrid<T> : IEnumerable<Vector2Int>
 	{
 		Vector2Int Size { get; }
-		bool Has(int x, int y);
+		bool HasCell(int x, int y);
 		bool TrySet(T value, int x, int y);
 		bool TryGet(int x, int y, out T value);
 		IEnumerable<(Vector2Int cell, T value)> WithValues();
