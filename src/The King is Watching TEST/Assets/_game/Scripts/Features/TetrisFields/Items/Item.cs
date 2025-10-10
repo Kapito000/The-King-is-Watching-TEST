@@ -50,5 +50,10 @@ namespace TetrisFields.Items
 				_itemCells[i].transform.localPosition = _cells[i].AsVector3();
 			}
 		}
+
+		public void Destroy()
+		{
+			Destroy(gameObject);
+		}
 	}
 }

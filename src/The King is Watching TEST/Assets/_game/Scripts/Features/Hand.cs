@@ -1,5 +1,6 @@
 using Infrastructure;
 using Input;
+using ItemDestruction;
 using TetrisFields;
 using TetrisFields.Items;
 using UniRx;
@@ -29,15 +30,15 @@ public sealed class Hand : MonoBehaviour
 			.AddTo(this);
 
 		_inputService.Rotate
-			.Subscribe(_ => OnRotate())
+			.Subscribe(_ => RotateItem())
 			.AddTo(this);
 	}
 
-	void OnRotate()
+	void RotateItem()
 	{
 		if (_isCaptured == false)
 			return;
-		
+
 		_capturedItem.Rotate();
 	}
 
@@ -57,6 +58,26 @@ public sealed class Hand : MonoBehaviour
 
 		if (TryPutItem(mousePos))
 			return;
+
+		if (TryDestructItem(mousePos))
+			return;
+	}
+
+	bool TryDestructItem(Vector2 pos)
+	{
+		if (_isCaptured == false)
+			return false;
+
+		var hit = RayCastHit(pos);
+
+		if (hit.collider == null ||
+		    !hit.collider.TryGetComponent<IDestroyArea>(out var destroyArea))
+			return false;
+
+		_capturedItem.Destroy();
+		DropItem();
+		
+		return true;
 	}
 
 	bool TryCaptureItem(Vector2 pos)
@@ -64,8 +85,7 @@ public sealed class Hand : MonoBehaviour
 		if (_isCaptured)
 			return false;
 
-		Vector2 worldPos = ScreenToWorldPoint(pos);
-		RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+		var hit = RayCastHit(pos);
 
 		if (hit.collider == null ||
 		    !hit.collider.TryGetComponent<IFieldCell>(out var fieldCell) ||
@@ -90,8 +110,7 @@ public sealed class Hand : MonoBehaviour
 		if (_isCaptured == false)
 			return false;
 
-		Vector2 worldPos = ScreenToWorldPoint(pos);
-		RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+		var hit = RayCastHit(pos);
 
 		if (hit.collider == null ||
 		    !hit.collider.TryGetComponent<IFieldCell>(out var fieldCell) ||
@@ -121,6 +140,12 @@ public sealed class Hand : MonoBehaviour
 	{
 		_isCaptured = false;
 		_capturedItem.Uncapture();
+	}
+
+	RaycastHit2D RayCastHit(Vector2 pos)
+	{
+		Vector2 worldPos = ScreenToWorldPoint(pos);
+		return Physics2D.Raycast(worldPos, Vector2.zero);
 	}
 
 	Vector3 ScreenToWorldPoint(Vector2 pos) =>

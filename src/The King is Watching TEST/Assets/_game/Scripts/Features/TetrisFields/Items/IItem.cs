@@ -9,5 +9,6 @@ namespace TetrisFields.Items
 		void Capture();
 		void Uncapture();
 		void Rotate();
+		void Destroy();
 	}
 }
