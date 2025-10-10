@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Map
 {
-	public interface IGrid<T> : IEnumerable<Vector2Int>
+	public interface IGrid<T> : IEnumerable<T>
 	{
 		Vector2Int Size { get; }
 		bool HasCell(int x, int y);
@@ -13,5 +13,6 @@ namespace Map
 		IEnumerable<(Vector2Int cell, T value)> WithValues();
 		public IEnumerable<(Vector2Int cell, T value)> WithValues(Func<T, bool> where);
 		IEnumerable<Vector2Int> AllCoordinates(Func<T, bool> where);
+		IEnumerable<Vector2Int> AllCoordinates();
 	}
 }

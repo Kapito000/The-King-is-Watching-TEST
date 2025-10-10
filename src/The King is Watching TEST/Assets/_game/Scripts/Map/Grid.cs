@@ -49,7 +49,7 @@ namespace Map
 
 		public IEnumerable<(Vector2Int cell, T value)> WithValues()
 		{
-			foreach (var cell in this)
+			foreach (var cell in AllCoordinates())
 				yield return new(cell, _cells[cell.x, cell.y]);
 		}
 
@@ -62,7 +62,7 @@ namespace Map
 				yield break;
 			}
 
-			foreach (var cell in this)
+			foreach (var cell in AllCoordinates())
 				if (where.Invoke(_cells[cell.x, cell.y]))
 					yield return new(cell, _cells[cell.x, cell.y]);
 		}
@@ -75,16 +75,23 @@ namespace Map
 				yield break;
 			}
 
-			foreach (var cell in this)
+			foreach (var cell in AllCoordinates())
 				if (where.Invoke(_cells[cell.x, cell.y]))
 					yield return cell;
 		}
-
-		public IEnumerator<Vector2Int> GetEnumerator()
+		
+		public IEnumerable<Vector2Int> AllCoordinates()
 		{
 			for (int x = 0; x < Size.x; x++)
 			for (int y = 0; y < Size.y; y++)
 				yield return new Vector2Int(x, y);
+		}
+
+		public IEnumerator<T> GetEnumerator()
+		{
+			for (int x = 0; x < Size.x; x++)
+			for (int y = 0; y < Size.y; y++)
+				yield return _cells[x, y];
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

@@ -27,7 +27,7 @@ namespace TetrisFields
 
 		void CreateCells(TetrisField field)
 		{
-			foreach (var gridPos in field.ItemsGrid)
+			foreach (var gridPos in field.ItemsGrid.AllCoordinates())
 			{
 				var cell = CreateCell(field, gridPos);
 				InitCell(field, cell, gridPos);

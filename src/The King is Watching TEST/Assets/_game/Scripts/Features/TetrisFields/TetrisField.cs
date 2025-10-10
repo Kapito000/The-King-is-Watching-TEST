@@ -53,8 +53,11 @@ namespace TetrisFields
 
 		public void ExtractItem(IItem item)
 		{
-			foreach (var v in _itemsGrid)
-				ExtractItem(v.x, v.y);
+			foreach (var (pos, gridItem) in _itemsGrid.WithValues())
+			{
+				if (gridItem == item)
+					ExtractItem(pos.x, pos.y);
+			}
 
 			_items.Remove(item);
 		}
