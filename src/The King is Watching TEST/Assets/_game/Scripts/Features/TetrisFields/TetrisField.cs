@@ -32,7 +32,7 @@ namespace TetrisFields
 				if (_itemsGrid.HasCell(gridCell) == false)
 					return false;
 
-				if (_itemsGrid[x, y] != null)
+				if (_itemsGrid[gridCell.x, gridCell.y] != null)
 					return false;
 			}
 
