@@ -1,31 +1,73 @@
+using Infrastructure;
 using Input;
 using TetrisFields;
 using TetrisFields.Items;
+using UniRx;
 using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Serialization;
 using Zenject;
 
 public sealed class Hand : MonoBehaviour
 {
 	[SerializeField] bool _isCaptured;
-	[SerializeField] GameBootstrapper gameBootstrapper;
+
 	[Inject] IInputService _inputService;
 
-	IItem _captured;
+	[Inject(Id = InjectId.MainCamera)]
+	Camera _camera;
 
-	void OnDestroy()
-	{ }
+	IItem _capturedItem;
 
 	void Update()
+	{
+		TryReplaceCapturedItem();
+	}
+
+	public void Init()
+	{
+		_inputService.Clicked
+			.Subscribe(OnClicked)
+			.AddTo(this);
+	}
+
+	void TryReplaceCapturedItem()
 	{
 		if (_isCaptured == false)
 			return;
 
-		// _captured.MoveTo(_inputController.WorldPos);
+		var worldPos = ScreenToWorldPoint(_inputService.Pos);
+		_capturedItem.ReplaceTo(worldPos);
 	}
-	
-	
+
+	void OnClicked(Vector2 mousePos)
+	{
+		if (TryCaptureItem(mousePos))
+			return;
+	}
+
+	bool TryCaptureItem(Vector2 pos)
+	{
+		if (_isCaptured)
+			return false;
+		
+		Vector2 worldPos = ScreenToWorldPoint(pos);
+		RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+
+		if (hit.collider == null ||
+		    !hit.collider.TryGetComponent<IFieldCell>(out var fieldCell) ||
+		    !hit.collider.TryGetComponent<ITetrisFieldRef>(out var fieldRef) ||
+		    fieldRef.Field == null)
+			return false;
+
+		if (fieldCell.HasItem == false)
+			return false;
+
+		var item = fieldCell.Item;
+		var field = fieldRef.Field;
+		field.ExtractItem(item);
+		
+		CaptureItem(item);
+		return true;
+	}
 
 	void OnTaked(IItem item)
 	{
@@ -56,14 +98,15 @@ public sealed class Hand : MonoBehaviour
 
 	void CaptureItem(IItem item)
 	{
-		_captured = item;
-		// _captured.Capture();
+		_capturedItem = item;
 		_isCaptured = true;
 	}
 
 	void DropItem()
 	{
-		// _captured.Uncapture();
 		_isCaptured = false;
 	}
+
+	Vector3 ScreenToWorldPoint(Vector2 pos) => 
+		_camera.ScreenToWorldPoint(pos);
 }

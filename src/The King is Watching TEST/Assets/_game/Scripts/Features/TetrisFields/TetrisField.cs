@@ -44,7 +44,7 @@ namespace TetrisFields
 			foreach (var itemCellPos in item.Cells)
 			{
 				var (x, y) = (pos + itemCellPos).Deconstruct();
-				_itemsGrid[x, y] = item;
+				PlaceItem(x, y, item);
 			}
 
 			item.ReplaceTo(transform.position + pos.AsVector3());
@@ -54,7 +54,7 @@ namespace TetrisFields
 		public void ExtractItem(IItem item)
 		{
 			foreach (var v in _itemsGrid)
-				_itemsGrid[v.x, v.y] = null;
+				ExtractItem(v.x, v.y);
 
 			_items.Remove(item);
 		}
@@ -62,6 +62,18 @@ namespace TetrisFields
 		public void SetFieldCell(IFieldCell cell, Vector2Int pos)
 		{
 			_fieldCellGrid[pos.x, pos.y] = cell;
+		}
+
+		void PlaceItem(int x, int y, IItem item)
+		{
+			_itemsGrid[x, y] = item;
+			_fieldCellGrid[x, y].PlaceItem(item);
+		}
+
+		void ExtractItem(int x, int y)
+		{
+			_itemsGrid[x, y] = null;
+			_fieldCellGrid[x, y].ExtractItem();
 		}
 	}
 }

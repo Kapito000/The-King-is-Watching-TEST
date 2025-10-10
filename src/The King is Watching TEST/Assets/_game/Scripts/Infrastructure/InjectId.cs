@@ -2,6 +2,7 @@
 {
 	public enum InjectId
 	{
+		MainCamera,
 		ItemsParent,
 		GameFieldParent,
 		FreeItemsFieldParent,

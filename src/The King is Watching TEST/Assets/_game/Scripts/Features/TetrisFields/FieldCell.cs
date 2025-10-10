@@ -1,6 +1,5 @@
 ﻿using TetrisFields.Items;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace TetrisFields
 {
@@ -8,8 +7,6 @@ namespace TetrisFields
 	{
 		IItem _item;
 		public IItem Item => _item;
-
-		[SerializeField] Collider2D _collider;
 
 		[field: SerializeField] public bool HasItem { get; private set; }
 		[field: SerializeField] public Vector2Int FieldPos { get; set; }
@@ -20,19 +17,15 @@ namespace TetrisFields
 			set => transform.position = new Vector3(value.x, value.y, 0);
 		}
 
-		void Awake()
+		public void PlaceItem(IItem item)
 		{
-			Assert.IsNotNull(_collider);
-		}
-
-		public void Place(IItem item)
-		{
-			HasItem = true;
 			_item = item;
+			HasItem = true;
 		}
 
 		public IItem ExtractItem()
 		{
+			_item	= null;
 			HasItem = false;
 			return _item;
 		}

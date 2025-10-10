@@ -10,7 +10,7 @@ namespace TetrisFields
 		Vector2 Pos { get; set; }
 		Vector2Int FieldPos { get; set; }
 
-		void Place(IItem item);
+		void PlaceItem(IItem item);
 		IItem ExtractItem();
 	}
 }

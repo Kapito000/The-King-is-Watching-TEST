@@ -6,11 +6,6 @@ using Zenject;
 
 namespace Input
 {
-	public struct ClickedArgs
-	{
-		public Vector2 Pos;
-	}
-
 	public sealed class InputService : IInputService, IDisposable
 	{
 		[Inject] InputActions _inputActions;

@@ -10,6 +10,8 @@ namespace Infrastructure
 {
 	public sealed class GameInstaller : MonoInstaller
 	{
+		[SerializeField] Hand _hand;
+		[SerializeField] Camera _mainCamera;
 		[Header("Free items field")]
 		[SerializeField] Transform _freeItemsFieldParent;
 		[Header("Game field")]
@@ -25,6 +27,8 @@ namespace Infrastructure
 
 		public override void InstallBindings()
 		{
+			BindHand();
+			BindMainCamera();
 			BindItemPrefab();
 			BindTetrisField();
 			BindItemFactory();
@@ -33,6 +37,28 @@ namespace Infrastructure
 			BindGameFieldsParents();
 			BindTetrisFieldFactory();
 			BindItemDataCollection();
+		}
+
+		void BindMainCamera()
+		{
+			Assert.IsNotNull(_mainCamera);
+			
+			Container
+				.BindInstance(_mainCamera)
+				.WithId(InjectId.MainCamera)
+				.AsSingle();
+		}
+
+		void BindHand()
+		{
+			Assert.IsNotNull(_hand);
+			
+			Container
+				.BindInterfacesAndSelfTo<Hand>()
+				.FromInstance(_hand)
+				.AsSingle()
+				.OnInstantiated<Hand>((_, x) => x.Init())
+				.NonLazy();
 		}
 
 		void BindInputService()
