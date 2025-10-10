@@ -28,25 +28,17 @@ namespace TetrisFields.Items
 
 		public void Capture()
 		{
-			foreach (var x in _itemCells)
+			foreach (var cell in _itemCells)
 			{
-				x.SetLayer(Constant.SortingLayers.CapturedItem);
+				cell.SetRenderLayer(Constant.SortingLayers.CapturedItem);
 			}
 		}
 
 		public void Uncapture()
 		{
-			foreach (var x in _itemCells)
+			foreach (var cell in _itemCells)
 			{
-				x.SetLayer(Constant.SortingLayers.Item);
-			}
-		}
-
-		public void PutToField()
-		{
-			foreach (var x in _itemCells)
-			{
-				x.SetLayer(Constant.SortingLayers.Item);
+				cell.SetRenderLayer(Constant.SortingLayers.Item);
 			}
 		}
 

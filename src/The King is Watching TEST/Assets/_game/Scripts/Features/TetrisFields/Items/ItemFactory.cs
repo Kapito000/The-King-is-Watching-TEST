@@ -33,7 +33,6 @@ namespace TetrisFields.Items
 			var cell = _instantiator
 				.InstantiatePrefabForComponent<ItemCell>(_itemCellPrefab, pos,
 					Quaternion.identity, parent)
-				.With(c => c.SetItem(item))
 				.With(item.AddItemCell);
 			
 			return cell;

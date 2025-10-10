@@ -108,6 +108,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Button"",
+                    ""id"": ""d2c68106-730d-4984-a069-506e9ff91d85"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -130,6 +139,17 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";PC"",
                     ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a62e9e7f-f4d2-406c-9598-dad229d99f40"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -159,6 +179,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Base = asset.FindActionMap("Base", throwIfNotFound: true);
         m_Base_Pos = m_Base.FindAction("Pos", throwIfNotFound: true);
         m_Base_Click = m_Base.FindAction("Click", throwIfNotFound: true);
+        m_Base_Rotate = m_Base.FindAction("Rotate", throwIfNotFound: true);
     }
 
     ~@InputActions()
@@ -241,6 +262,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private List<IBaseActions> m_BaseActionsCallbackInterfaces = new List<IBaseActions>();
     private readonly InputAction m_Base_Pos;
     private readonly InputAction m_Base_Click;
+    private readonly InputAction m_Base_Rotate;
     /// <summary>
     /// Provides access to input actions defined in input action map "Base".
     /// </summary>
@@ -260,6 +282,10 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Base/Click".
         /// </summary>
         public InputAction @Click => m_Wrapper.m_Base_Click;
+        /// <summary>
+        /// Provides access to the underlying input action "Base/Rotate".
+        /// </summary>
+        public InputAction @Rotate => m_Wrapper.m_Base_Rotate;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -292,6 +318,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Click.started += instance.OnClick;
             @Click.performed += instance.OnClick;
             @Click.canceled += instance.OnClick;
+            @Rotate.started += instance.OnRotate;
+            @Rotate.performed += instance.OnRotate;
+            @Rotate.canceled += instance.OnRotate;
         }
 
         /// <summary>
@@ -309,6 +338,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Click.started -= instance.OnClick;
             @Click.performed -= instance.OnClick;
             @Click.canceled -= instance.OnClick;
+            @Rotate.started -= instance.OnRotate;
+            @Rotate.performed -= instance.OnRotate;
+            @Rotate.canceled -= instance.OnRotate;
         }
 
         /// <summary>
@@ -376,5 +408,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Rotate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRotate(InputAction.CallbackContext context);
     }
 }

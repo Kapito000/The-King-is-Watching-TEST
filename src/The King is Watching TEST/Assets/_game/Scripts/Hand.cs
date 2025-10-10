@@ -27,6 +27,18 @@ public sealed class Hand : MonoBehaviour
 		_inputService.Clicked
 			.Subscribe(OnClicked)
 			.AddTo(this);
+
+		_inputService.Rotate
+			.Subscribe(_ => OnRotate())
+			.AddTo(this);
+	}
+
+	void OnRotate()
+	{
+		if (_isCaptured == false)
+			return;
+		
+		_capturedItem.Rotate();
 	}
 
 	void TryReplaceCapturedItem()
@@ -62,7 +74,7 @@ public sealed class Hand : MonoBehaviour
 			return false;
 
 		var field = fieldRef.Field;
-		
+
 		if (field.HasItemAt(fieldCell.FieldPos) == false)
 			return false;
 
@@ -98,42 +110,17 @@ public sealed class Hand : MonoBehaviour
 		return true;
 	}
 
-	void OnTaked(IItem item)
-	{
-		if (_isCaptured)
-			return;
-
-		CaptureItem(item);
-	}
-
-	void OnRotate()
-	{
-		if (_isCaptured)
-			return;
-
-		// _captured.Rotate();
-	}
-
-	void OnPut(IFieldCell fieldCell)
-	{
-		if (_isCaptured == false)
-			return;
-
-		// if (_gameManager.TryPlace(fieldCell, _captured) == false)
-		// return;
-
-		DropItem();
-	}
-
 	void CaptureItem(IItem item)
 	{
-		_capturedItem = item;
 		_isCaptured = true;
+		_capturedItem = item;
+		_capturedItem.Capture();
 	}
 
 	void DropItem()
 	{
 		_isCaptured = false;
+		_capturedItem.Uncapture();
 	}
 
 	Vector3 ScreenToWorldPoint(Vector2 pos) =>
