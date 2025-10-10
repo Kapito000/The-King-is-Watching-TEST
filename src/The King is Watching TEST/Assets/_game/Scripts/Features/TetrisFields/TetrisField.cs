@@ -23,8 +23,6 @@ namespace TetrisFields
 
 		public bool CanPutItem(IItem item, Vector2Int pos)
 		{
-			var (x, y) = pos.Deconstruct();
-
 			foreach (var itemCellPos in item.Cells)
 			{
 				var gridCell = pos + itemCellPos;
