@@ -42,13 +42,16 @@ public sealed class Hand : MonoBehaviour
 	{
 		if (TryCaptureItem(mousePos))
 			return;
+
+		if (TryPutItem(mousePos))
+			return;
 	}
 
 	bool TryCaptureItem(Vector2 pos)
 	{
 		if (_isCaptured)
 			return false;
-		
+
 		Vector2 worldPos = ScreenToWorldPoint(pos);
 		RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
 
@@ -58,14 +61,40 @@ public sealed class Hand : MonoBehaviour
 		    fieldRef.Field == null)
 			return false;
 
-		if (fieldCell.HasItem == false)
+		var field = fieldRef.Field;
+		
+		if (field.HasItemAt(fieldCell.FieldPos) == false)
 			return false;
 
-		var item = fieldCell.Item;
-		var field = fieldRef.Field;
+		var item = field.GetItemAt(fieldCell.FieldPos);
 		field.ExtractItem(item);
-		
+
 		CaptureItem(item);
+		return true;
+	}
+
+	bool TryPutItem(Vector2 pos)
+	{
+		if (_isCaptured == false)
+			return false;
+
+		Vector2 worldPos = ScreenToWorldPoint(pos);
+		RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+
+		if (hit.collider == null ||
+		    !hit.collider.TryGetComponent<IFieldCell>(out var fieldCell) ||
+		    !hit.collider.TryGetComponent<ITetrisFieldRef>(out var fieldRef) ||
+		    fieldRef.Field == null)
+			return false;
+
+		var field = fieldRef.Field;
+
+		if (field.CanPutItem(_capturedItem, fieldCell.FieldPos) == false)
+			return false;
+
+		field.PutItem(_capturedItem, fieldCell.FieldPos);
+
+		DropItem();
 		return true;
 	}
 
@@ -107,6 +136,6 @@ public sealed class Hand : MonoBehaviour
 		_isCaptured = false;
 	}
 
-	Vector3 ScreenToWorldPoint(Vector2 pos) => 
+	Vector3 ScreenToWorldPoint(Vector2 pos) =>
 		_camera.ScreenToWorldPoint(pos);
 }

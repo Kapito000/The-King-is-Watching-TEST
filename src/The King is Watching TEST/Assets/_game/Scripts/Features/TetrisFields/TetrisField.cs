@@ -21,7 +21,7 @@ namespace TetrisFields
 			_fieldCellGrid = new Grid<IFieldCell>(size.x, size.y);
 		}
 
-		public bool CanPutItem(Vector2Int pos, IItem item)
+		public bool CanPutItem(IItem item, Vector2Int pos)
 		{
 			var (x, y) = pos.Deconstruct();
 
@@ -32,7 +32,7 @@ namespace TetrisFields
 				if (_itemsGrid.HasCell(gridCell) == false)
 					return false;
 
-				if (_itemsGrid[x, y] == null)
+				if (_itemsGrid[x, y] != null)
 					return false;
 			}
 
@@ -64,16 +64,30 @@ namespace TetrisFields
 			_fieldCellGrid[pos.x, pos.y] = cell;
 		}
 
+		public bool HasItemAt(Vector2Int pos)
+		{
+			if (_itemsGrid.HasCell(pos) == false)
+				return false;
+
+			if (_itemsGrid[pos.x, pos.y] == null)
+				return false;
+
+			return true;
+		}
+
+		public IItem GetItemAt(Vector2Int pos)
+		{
+			return _itemsGrid[pos.x, pos.y];
+		}
+
 		void PlaceItem(int x, int y, IItem item)
 		{
 			_itemsGrid[x, y] = item;
-			_fieldCellGrid[x, y].PlaceItem(item);
 		}
 
 		void ExtractItem(int x, int y)
 		{
 			_itemsGrid[x, y] = null;
-			_fieldCellGrid[x, y].ExtractItem();
 		}
 	}
 }
