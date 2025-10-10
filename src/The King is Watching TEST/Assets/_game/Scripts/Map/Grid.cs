@@ -7,7 +7,8 @@ namespace Map
 {
 	public class Grid<T> : IGrid<T>
 	{
-		protected readonly T[,] _cells;
+		readonly T[,] _cells;
+		
 		public Vector2Int Size { get; }
 
 		public Grid(int xSize, int ySize)
