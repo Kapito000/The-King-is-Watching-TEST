@@ -150,6 +150,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &288020233
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 288020235}
+  - component: {fileID: 288020234}
+  m_Layer: 0
+  m_Name: BootItemSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &288020234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288020233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac8e9c95b1ef4ffcae22b0d2438d00d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _freeAssetCount: 6
+--- !u!4 &288020235
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288020233}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &338332854
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,6 +226,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &341485545 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7674120243309738303, guid: 50b72f034af21334bb02185e0f79b657, type: 3}
+  m_PrefabInstance: {fileID: 9189017668945992705}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03fbdf335f814d2e8c6aceb5d06ecf29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,6 +481,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hand: {fileID: 1373865807}
   _mainCamera: {fileID: 519420031}
+  _destroyArea: {fileID: 341485545}
+  _bootItemSpawner: {fileID: 288020234}
   _freeItemsFieldParent: {fileID: 1872757401}
   _gameFieldParent: {fileID: 2054731}
   _tetrisFieldCellPrefab: {fileID: 4324012852246356452, guid: d6784fadea381f542b2c7313e0d42a69, type: 3}
@@ -605,7 +663,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startGridSize: {x: 8, y: 8}
-  _freeAssetCount: 6
   _freeItemsGridSize: {x: 6, y: 9}
 --- !u!4 &2127005755
 Transform:
@@ -688,6 +745,7 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 2127005755}
   - {fileID: 1373865808}
+  - {fileID: 288020235}
   - {fileID: 618222040}
   - {fileID: 2054731}
   - {fileID: 1872757401}

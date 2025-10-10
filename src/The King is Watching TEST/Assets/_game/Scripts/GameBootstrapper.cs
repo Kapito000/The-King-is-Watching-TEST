@@ -1,6 +1,6 @@
-using Extensions;
 using Infrastructure;
 using Input;
+using ItemSpawners;
 using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
@@ -11,7 +11,6 @@ public class GameBootstrapper : MonoBehaviour
 {
 	[SerializeField] Vector2Int _startGridSize = new(8, 8);
 	[Space]
-	[SerializeField] int _freeAssetCount = 6;
 	[SerializeField] Vector2Int _freeItemsGridSize = new(6, 9);
 
 	[Inject(Id = InjectId.GameFieldParent)]
@@ -21,13 +20,13 @@ public class GameBootstrapper : MonoBehaviour
 	[Inject(Id = InjectId.ItemsParent)]
 	Transform _itemsParent;
 
+	[Inject] IGameData _gameData;
 	[Inject] IItemFactory _itemFactory;
 	[Inject] IInputService _inputService;
+	[Inject] IBootItemSpawner _bootItemSpawner;
 	[Inject] ITetrisFieldFactory _fieldFactory;
 	[Inject] IItemDataCollection _itemDataCollection;
 
-	ITetrisField _gameField;
-	ITetrisField _freeItemsField;
 
 	void Start()
 	{
@@ -39,31 +38,18 @@ public class GameBootstrapper : MonoBehaviour
 
 	void CreateField()
 	{
-		_gameField = _fieldFactory.CreateField(_gameFieldParent, _startGridSize);
+		_gameData.GameField =
+			_fieldFactory.CreateField(_gameFieldParent, _startGridSize);
 	}
 
 	void CreateFreeItemsField()
 	{
-		_freeItemsField =
+		_gameData.FreeItemsField =
 			_fieldFactory.CreateField(_fireeItemsFieldParent, _freeItemsGridSize);
 	}
 
 	void CreateFreeItems()
 	{
-		const int gridStep = 3;
-
-		for (int i = 0; i < _freeAssetCount; i++)
-		{
-			var x = i % 2;
-			var y = i % 3;
-			var xOffset = x * gridStep;
-			var yOffset = y * gridStep;
-
-			var gridPos = new Vector2Int(xOffset, yOffset);
-			var itemData = _itemDataCollection.Items.Random();
-			var item = _itemFactory.CreateItem(_itemsParent, itemData.Cells);
-
-			_freeItemsField.PutItem(item, gridPos);
-		}
+		_bootItemSpawner.SpawnItems(_gameData.FreeItemsField);
 	}
 }

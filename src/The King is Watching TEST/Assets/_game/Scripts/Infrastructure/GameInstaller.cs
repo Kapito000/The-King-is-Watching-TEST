@@ -1,4 +1,6 @@
 ﻿using Input;
+using ItemDestruction;
+using ItemSpawners;
 using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
@@ -12,6 +14,8 @@ namespace Infrastructure
 	{
 		[SerializeField] Hand _hand;
 		[SerializeField] Camera _mainCamera;
+		[SerializeField] DestroyArea _destroyArea;
+		[SerializeField] BootItemSpawner _bootItemSpawner;
 		[Header("Free items field")]
 		[SerializeField] Transform _freeItemsFieldParent;
 		[Header("Game field")]
@@ -28,21 +32,76 @@ namespace Infrastructure
 		public override void InstallBindings()
 		{
 			BindHand();
+			BindGameData();
 			BindMainCamera();
 			BindItemPrefab();
 			BindTetrisField();
 			BindItemFactory();
 			BindItemsParent();
 			BindInputService();
+			BindFreeItemSpawner();
+			BindBootItemSpawner();
+			BindItemSpawnService();
 			BindGameFieldsParents();
 			BindTetrisFieldFactory();
 			BindItemDataCollection();
+			BindDestructionItemService();
+			BindItemSpawnerAfterDestruction();
+		}
+
+		void BindGameData()
+		{
+			Container
+				.BindInterfacesTo<GameData>()
+				.AsSingle();
+		}
+
+		void BindItemSpawnerAfterDestruction()
+		{
+			Container
+				.BindInterfacesAndSelfTo<ItemSpawnerAfterDestruction>()
+				.AsSingle();
+		}
+
+		void BindFreeItemSpawner()
+		{
+			Container
+				.BindInterfacesAndSelfTo<FreeItemSpawner>()
+				.AsSingle();
+		}
+
+		void BindItemSpawnService()
+		{
+			Container
+				.Bind<IItemSpawnService>()
+				.To<ItemSpawnService>()
+				.AsSingle();
+		}
+
+		void BindBootItemSpawner()
+		{
+			Assert.IsNotNull(_bootItemSpawner);
+
+			Container
+				.BindInterfacesAndSelfTo<BootItemSpawner>()
+				.FromInstance(_bootItemSpawner)
+				.AsSingle();
+		}
+
+		void BindDestructionItemService()
+		{
+			Assert.IsNotNull(_destroyArea);
+
+			Container
+				.BindInterfacesAndSelfTo<DestroyArea>()
+				.FromInstance(_destroyArea)
+				.AsSingle();
 		}
 
 		void BindMainCamera()
 		{
 			Assert.IsNotNull(_mainCamera);
-			
+
 			Container
 				.BindInstance(_mainCamera)
 				.WithId(InjectId.MainCamera)
@@ -52,7 +111,7 @@ namespace Infrastructure
 		void BindHand()
 		{
 			Assert.IsNotNull(_hand);
-			
+
 			Container
 				.BindInterfacesAndSelfTo<Hand>()
 				.FromInstance(_hand)

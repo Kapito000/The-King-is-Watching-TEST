@@ -21,9 +21,9 @@ namespace TetrisFields
 			_fieldCellGrid = new Grid<IFieldCell>(size.x, size.y);
 		}
 
-		public bool CanPutItem(IItem item, Vector2Int pos)
+		public bool CanPutItem(Vector2Int[] cells, Vector2Int pos)
 		{
-			foreach (var itemCellPos in item.Cells)
+			foreach (var itemCellPos in cells)
 			{
 				var gridCell = pos + itemCellPos;
 
@@ -36,7 +36,7 @@ namespace TetrisFields
 
 			return true;
 		}
-
+		
 		public void PutItem(IItem item, Vector2Int pos)
 		{
 			foreach (var itemCellPos in item.Cells)
@@ -80,6 +80,9 @@ namespace TetrisFields
 		{
 			return _itemsGrid[pos.x, pos.y];
 		}
+
+		public IEnumerable<IFieldCell> AllFields() => 
+			_fieldCellGrid;
 
 		void PlaceItem(int x, int y, IItem item)
 		{

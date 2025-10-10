@@ -56,6 +56,9 @@ namespace Input
 
 		void IDisposable.Dispose()
 		{
+			_rotate.OnCompleted();
+			_clickedSubject.OnCompleted();
+			
 			_disposables.Dispose();
 		}
 	}

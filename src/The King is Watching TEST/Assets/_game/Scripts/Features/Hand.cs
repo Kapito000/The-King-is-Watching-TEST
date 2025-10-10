@@ -12,6 +12,7 @@ public sealed class Hand : MonoBehaviour
 	[SerializeField] bool _isCaptured;
 
 	[Inject] IInputService _inputService;
+	[Inject] IDestructionItemService _destructionItemService;
 
 	[Inject(Id = InjectId.MainCamera)]
 	Camera _camera;
@@ -74,7 +75,7 @@ public sealed class Hand : MonoBehaviour
 		    !hit.collider.TryGetComponent<IDestroyArea>(out var destroyArea))
 			return false;
 
-		_capturedItem.Destroy();
+		_destructionItemService.DestroyItem(_capturedItem);
 		DropItem();
 		
 		return true;
@@ -120,7 +121,7 @@ public sealed class Hand : MonoBehaviour
 
 		var field = fieldRef.Field;
 
-		if (field.CanPutItem(_capturedItem, fieldCell.FieldPos) == false)
+		if (field.CanPutItem(_capturedItem.Cells, fieldCell.FieldPos) == false)
 			return false;
 
 		field.PutItem(_capturedItem, fieldCell.FieldPos);
