@@ -31,7 +31,6 @@ namespace TetrisFields.Items
 			foreach (var x in _itemCells)
 			{
 				x.SetLayer(Constant.SortingLayers.CapturedItem);
-				x.EnableCollider(false);
 			}
 		}
 
@@ -48,7 +47,6 @@ namespace TetrisFields.Items
 			foreach (var x in _itemCells)
 			{
 				x.SetLayer(Constant.SortingLayers.Item);
-				x.EnableCollider(false);
 			}
 		}
 

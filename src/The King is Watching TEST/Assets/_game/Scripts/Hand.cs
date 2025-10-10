@@ -9,9 +9,7 @@ using Zenject;
 public sealed class Hand : MonoBehaviour
 {
 	[SerializeField] bool _isCaptured;
-	[FormerlySerializedAs("gameBootstraper")]
-	[FormerlySerializedAs("_gameManager")] [SerializeField]
-	GameBootstrapper gameBootstrapper;
+	[SerializeField] GameBootstrapper gameBootstrapper;
 	[Inject] IInputService _inputService;
 
 	IItem _captured;
@@ -26,6 +24,8 @@ public sealed class Hand : MonoBehaviour
 
 		// _captured.MoveTo(_inputController.WorldPos);
 	}
+	
+	
 
 	void OnTaked(IItem item)
 	{

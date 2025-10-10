@@ -5,6 +5,5 @@ namespace TetrisFields.Items
 		IItem Item { get; }
 
 		void SetLayer(string layer);
-		void EnableCollider(bool enable);
 	}
 }
