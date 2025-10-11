@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ProductionCells;
 using ProductionCells.StaticData;
 using TetrisFields.Items;
 using UnityEngine;
@@ -15,5 +17,12 @@ namespace TetrisFields
 		IEnumerable<IFieldCell> AllFields();
 		Vector2Int Size { get; }
 		void CreateProductionCell(Vector2Int pos, IProductionCellData data);
+		IEnumerable<IProductionCell> AllProductionCells();
+
+		IEnumerable<IProductionCell> AllProductionCells(
+			Func<IProductionCell, bool> where);
+
+		IEnumerable<Vector2Int> AllProductionCellsCoordinates(
+			Func<IProductionCell, bool> where);
 	}
 }

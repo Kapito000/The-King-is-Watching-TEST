@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Extensions;
 using Map;
 using ProductionCells;
@@ -99,6 +100,39 @@ namespace TetrisFields
 
 		public IEnumerable<IFieldCell> AllFields() =>
 			_fieldCellsGrid;
+
+		public IEnumerable<IProductionCell> AllProductionCells() =>
+			_productionCellsGrid;
+
+		public IEnumerable<IProductionCell> AllProductionCells(
+			Func<IProductionCell, bool> where)
+		{
+			if (where == null)
+			{
+				Debug.LogError("The condition is null.");
+				yield break;
+			}
+
+			foreach (var productionCell in AllProductionCells())
+				if (where.Invoke(productionCell))
+					yield return productionCell;
+		}
+
+		public IEnumerable<Vector2Int> AllProductionCellsCoordinates(
+			Func<IProductionCell, bool> where)
+		{
+			if (where == null)
+			{
+				Debug.LogError("The condition is null.");
+				yield break;
+			}
+
+			foreach (var pos in _productionCellsGrid.AllCoordinates())
+			{
+				if (where.Invoke(_productionCellsGrid[pos.x, pos.y]))
+					yield return pos;
+			}
+		}
 
 		void PlaceItem(int x, int y, IItem item)
 		{
