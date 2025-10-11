@@ -1,4 +1,5 @@
-﻿using Input;
+﻿using GameResources;
+using Input;
 using ItemDestruction;
 using ItemSpawners;
 using TetrisFields;
@@ -16,6 +17,7 @@ namespace Infrastructure
 		[SerializeField] Camera _mainCamera;
 		[SerializeField] DestroyArea _destroyArea;
 		[SerializeField] BootItemSpawner _bootItemSpawner;
+		[SerializeField] PlayerResources _playerResources;
 		[Header("Free items field")]
 		[SerializeField] Transform _freeItemsFieldParent;
 		[Header("Game field")]
@@ -39,6 +41,7 @@ namespace Infrastructure
 			BindItemFactory();
 			BindItemsParent();
 			BindInputService();
+			BindPlayerResources();
 			BindFreeItemSpawner();
 			BindBootItemSpawner();
 			BindItemSpawnService();
@@ -47,6 +50,15 @@ namespace Infrastructure
 			BindItemDataCollection();
 			BindDestructionItemService();
 			BindItemSpawnerAfterDestruction();
+		}
+
+		void BindPlayerResources()
+		{
+			Assert.IsNotNull(_playerResources);
+			
+			Container
+				.BindInterfacesTo<PlayerResources>()
+				.FromInstance(_playerResources);
 		}
 
 		void BindGameData()
