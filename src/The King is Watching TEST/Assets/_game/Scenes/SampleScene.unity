@@ -779,6 +779,7 @@ MonoBehaviour:
   - {fileID: 2109629060}
   _itemDataCollection: {fileID: 11400000, guid: 2a6eb4daeb299804ab31ecd1abecebab, type: 2}
   _resourceCellDataCollection: {fileID: 11400000, guid: 89f3ec1de0285b74da8bf75d5bd28829, type: 2}
+  _productionCellDataCollection: {fileID: 11400000, guid: 4fc796e3344de3f4a8e75b8d184fcddd, type: 2}
 --- !u!4 &1715969837
 Transform:
   m_ObjectHideFlags: 0

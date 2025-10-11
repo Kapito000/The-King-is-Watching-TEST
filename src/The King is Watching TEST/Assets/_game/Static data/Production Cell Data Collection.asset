@@ -12,4 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4590d3d05028451399f682b4b30486d7, type: 3}
   m_Name: Production Cell Data Collection
   m_EditorClassIdentifier: 
-  _productionCells: []
+  _productionCells:
+  - Color: {r: 0, g: 1, b: 0, a: 0}
+    ProductionModifier: 1
+    ProductionTimer: 0
+  - Color: {r: 1, g: 1, b: 0, a: 0}
+    ProductionModifier: 0.4
+    ProductionTimer: 2.5
+  - Color: {r: 1, g: 0, b: 0, a: 0}
+    ProductionModifier: 0
+    ProductionTimer: 0
