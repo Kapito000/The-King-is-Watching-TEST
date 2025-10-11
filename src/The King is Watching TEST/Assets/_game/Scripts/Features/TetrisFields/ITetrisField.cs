@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ProductionCells.StaticData;
 using TetrisFields.Items;
 using UnityEngine;
 
@@ -12,5 +13,7 @@ namespace TetrisFields
 		bool HasItemAt(Vector2Int pos);
 		IItem GetItemAt(Vector2Int pos);
 		IEnumerable<IFieldCell> AllFields();
+		Vector2Int Size { get; }
+		void CreateProductionCell(Vector2Int pos, IProductionCellData data);
 	}
 }

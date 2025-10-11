@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using Extensions;
 using Map;
+using ProductionCells;
+using ProductionCells.StaticData;
 using TetrisFields.Items;
 using UnityEngine;
 
@@ -9,16 +11,30 @@ namespace TetrisFields
 	public sealed class TetrisField : MonoBehaviour, ITetrisField
 	{
 		Grid<IItem> _itemsGrid;
-		Grid<IFieldCell> _fieldCellsGrid;
+		Grid<FieldCell> _fieldCellsGrid;
+		Grid<IProductionCell> _productionCellsGrid;
 
 		List<IItem> _items = new();
 
 		public IGrid<IItem> ItemsGrid => _itemsGrid;
+		public Vector2Int Size => _itemsGrid.Size;
+
+		public void CreateProductionCell(Vector2Int pos, IProductionCellData data)
+		{
+			var fieldCell = _fieldCellsGrid[pos.x, pos.y];
+			if (fieldCell.TryGetComponent<ProductionCell>(out var productionCell))
+			{
+				productionCell.Init(data);
+			}
+
+			_productionCellsGrid[pos.x, pos.y] = productionCell;
+		}
 
 		public void Init(Vector2Int size)
 		{
 			_itemsGrid = new Grid<IItem>(size.x, size.y);
-			_fieldCellsGrid = new Grid<IFieldCell>(size.x, size.y);
+			_fieldCellsGrid = new Grid<FieldCell>(size.x, size.y);
+			_productionCellsGrid = new Grid<IProductionCell>(size.x, size.y);
 		}
 
 		public bool CanPutItem(Vector2Int[] cells, Vector2Int pos)
@@ -36,7 +52,7 @@ namespace TetrisFields
 
 			return true;
 		}
-		
+
 		public void PutItem(IItem item, Vector2Int pos)
 		{
 			foreach (var itemCellPos in item.Cells)
@@ -60,7 +76,7 @@ namespace TetrisFields
 			_items.Remove(item);
 		}
 
-		public void SetFieldCell(IFieldCell cell, Vector2Int pos)
+		public void SetFieldCell(FieldCell cell, Vector2Int pos)
 		{
 			_fieldCellsGrid[pos.x, pos.y] = cell;
 		}
@@ -81,7 +97,7 @@ namespace TetrisFields
 			return _itemsGrid[pos.x, pos.y];
 		}
 
-		public IEnumerable<IFieldCell> AllFields() => 
+		public IEnumerable<IFieldCell> AllFields() =>
 			_fieldCellsGrid;
 
 		void PlaceItem(int x, int y, IItem item)

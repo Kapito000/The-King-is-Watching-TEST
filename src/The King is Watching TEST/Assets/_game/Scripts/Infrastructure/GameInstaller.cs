@@ -3,6 +3,7 @@ using GameResources.StaticData;
 using Input;
 using ItemDestruction;
 using ItemSpawners;
+using ProductionCells;
 using ProductionCells.StaticData;
 using TetrisFields;
 using TetrisFields.Items;
@@ -56,18 +57,27 @@ namespace Infrastructure
 			BindTetrisFieldFactory();
 			BindItemDataCollection();
 			BindDestructionItemService();
+			BindProductionCellsGenerator();
 			BindResourcesStorageViewPanel();
 			BindResourceCellDataCollection();
 			BindItemSpawnerAfterDestruction();
 			BindProductionCellDataCollection();
 		}
 
+		void BindProductionCellsGenerator()
+		{
+			Container
+				.Bind<IProductionCellsGenerator>()
+				.To<ProductionCellsGenerator>()
+				.AsSingle();
+		}
+
 		void BindProductionCellDataCollection()
 		{
 			Assert.IsNotNull(_productionCellDataCollection);
-			
+
 			Container
-				.BindInterfacesTo<IProductionCellDataCollection>()
+				.Bind<IProductionCellDataCollection>()
 				.FromInstance(_productionCellDataCollection);
 		}
 

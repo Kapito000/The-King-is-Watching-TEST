@@ -4,11 +4,15 @@ using UnityEngine;
 namespace ProductionCells.StaticData
 {
 	[Serializable]
-	public struct ProductionCellData
+	public sealed class ProductionCellData : IProductionCellData
 	{
-		public Color Color;
+		[SerializeField] Color _color;
 		[Range(0, 1)]
-		public float ProductionModifier;
-		public float ProductionTimer;
+		[SerializeField] float _productionModifier;
+		[SerializeField] float _productionTimer;
+
+		public Color Color => _color;
+		public float ProductionModifier => _productionModifier;
+		public float ProductionTimer => _productionTimer;
 	}
 }

@@ -1,6 +1,7 @@
 using Infrastructure;
 using Input;
 using ItemSpawners;
+using ProductionCells;
 using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
@@ -27,21 +28,23 @@ public class GameBootstrapper : MonoBehaviour
 	[Inject] IBootItemSpawner _bootItemSpawner;
 	[Inject] ITetrisFieldFactory _fieldFactory;
 	[Inject] IItemDataCollection _itemDataCollection;
+	[Inject] IProductionCellsGenerator _productionCellsGenerator;
 	[Inject] IResourcesStorageViewPanel[] _resourcesStorageViewPanels;
 
 	void Start()
 	{
-		CreateField();
+		CreateGameField();
 		CreateFreeItemsField();
 		CreateFreeItems();
 		_inputService.Enable();
 		InitUI();
 	}
 
-	void CreateField()
+	void CreateGameField()
 	{
-		_gameData.GameField =
-			_fieldFactory.CreateField(_gameFieldParent, _startGridSize);
+		var field = _fieldFactory.CreateField(_gameFieldParent, _startGridSize);
+		_productionCellsGenerator.Generate(field);
+		_gameData.GameField = field;
 	}
 
 	void CreateFreeItemsField()
@@ -57,7 +60,7 @@ public class GameBootstrapper : MonoBehaviour
 
 	void InitUI()
 	{
-		foreach (var panel in _resourcesStorageViewPanels) 
+		foreach (var panel in _resourcesStorageViewPanels)
 			panel.Init();
 	}
 }

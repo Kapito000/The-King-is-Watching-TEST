@@ -1,5 +1,9 @@
-﻿namespace ProductionCells.StaticData
+﻿using System.Collections.Generic;
+
+namespace ProductionCells.StaticData
 {
-	public interface IProductionCellDataCollection
-	{ }
+	public interface IProductionCellDataCollection : IEnumerable<ProductionCellData>
+	{
+		ProductionCellData[] ProductionData { get; }
+	}
 }

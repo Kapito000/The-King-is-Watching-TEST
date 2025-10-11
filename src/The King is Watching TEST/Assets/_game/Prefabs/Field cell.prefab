@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4324012852246356452}
   - component: {fileID: 4714918705198998224}
   - component: {fileID: 2344632254187766162}
+  - component: {fileID: 6935962236285244700}
   m_Layer: 0
   m_Name: Field cell
   m_TagString: Untagged
@@ -102,8 +103,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c57bc9469cd144ea91f7ddc6ddc22e60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider: {fileID: 4714918705198998224}
-  <HasItem>k__BackingField: 0
   <FieldPos>k__BackingField: {x: 0, y: 0}
 --- !u!61 &4714918705198998224
 BoxCollider2D:
@@ -163,3 +162,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3bbaad909864632897a83a1995a878f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6935962236285244700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6455040203833175200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33663cf5859c4d84991c9fbd42e6fdfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 5626776538451450765}
