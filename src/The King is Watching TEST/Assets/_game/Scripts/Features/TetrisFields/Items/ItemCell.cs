@@ -22,5 +22,10 @@ namespace TetrisFields.Items
 			_renderer.sortingLayerName = layer;
 			_renderLayerChanged.OnNext(layer);
 		}
+
+		public void SetColor(Color color)
+		{
+			_renderer.color = color;
+		}
 	}
 }

@@ -12,6 +12,8 @@ namespace TetrisFields.Items
 		[Inject] IInstantiator _instantiator;
 		[Inject] IResourceCellDataCollection _resourceCellData;
 
+		float _colorGenerationLerp;
+
 		public Item CreateItem(Transform parent, Vector2Int[] cells)
 		{
 			var item = _instantiator
@@ -19,16 +21,19 @@ namespace TetrisFields.Items
 					Quaternion.identity, parent)
 				.With(i => i.Cells = cells);
 
+			var color = GenerateColor();
+
 			var resourceCellIndex = Random.Range(0, item.Cells.Length);
 			for (var i = 0; i < item.Cells.Length; i++)
 			{
 				var cellPos = item.Cells[i];
-				var itemCell = CreateCell(cellPos, item);
+				var itemCell = CreateCell(cellPos, item, color);
 
 				ProcessResourceCellCreation(i, resourceCellIndex, itemCell, item,
 					cellPos);
 			}
 
+			MakeStepForColorGeneration();
 			return item;
 		}
 
@@ -48,7 +53,7 @@ namespace TetrisFields.Items
 			});
 		}
 
-		ItemCell CreateCell(Vector2Int cellPos, Item item)
+		ItemCell CreateCell(Vector2Int cellPos, Item item, Color color)
 		{
 			var pos = item.transform.position + cellPos.AsVector3();
 			var parent = item.transform;
@@ -56,6 +61,7 @@ namespace TetrisFields.Items
 			var cell = _instantiator
 				.InstantiatePrefabForComponent<ItemCell>(_itemCellPrefab, pos,
 					Quaternion.identity, parent)
+				.With(c => c.SetColor(color))
 				.With(item.AddItemCell);
 
 			return cell;
@@ -72,6 +78,28 @@ namespace TetrisFields.Items
 						Quaternion.identity, parent)
 					.With(c => c.Init(itemCell))
 				;
+		}
+
+		Color GenerateColor()
+		{
+			float f = .8f;
+			Color from = new Color(f, f, f);
+			float t = .35f;
+			Color to = new Color(t, t, t);
+
+			return Color.Lerp(from, to, _colorGenerationLerp);
+		}
+
+		void MakeStepForColorGeneration()
+		{
+			const float step = .2f;
+			_colorGenerationLerp += step;
+
+			if (_colorGenerationLerp > 1 ||
+			    Mathf.Approximately(_colorGenerationLerp, 1))
+			{
+				_colorGenerationLerp = 0;
+			}
 		}
 	}
 }
