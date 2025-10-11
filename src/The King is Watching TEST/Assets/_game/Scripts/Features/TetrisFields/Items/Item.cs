@@ -12,6 +12,8 @@ namespace TetrisFields.Items
 
 		List<ItemCell> _itemCells = new();
 
+		public ResourceCellInfo ResourceCell => _resourceCell;
+		
 		public Vector2Int[] Cells
 		{
 			get => _cells;

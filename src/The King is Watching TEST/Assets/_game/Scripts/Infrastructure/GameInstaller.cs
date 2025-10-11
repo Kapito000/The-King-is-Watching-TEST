@@ -5,6 +5,7 @@ using ItemDestruction;
 using ItemSpawners;
 using ProductionCells;
 using ProductionCells.StaticData;
+using Productions;
 using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
@@ -22,6 +23,7 @@ namespace Infrastructure
 		[SerializeField] DestroyArea _destroyArea;
 		[SerializeField] BootItemSpawner _bootItemSpawner;
 		[SerializeField] PlayerResources _playerResources;
+		[SerializeField] ProductionSystem _productionSystem;
 		[Header("Free items field")]
 		[SerializeField] Transform _freeItemsFieldParent;
 		[Header("Game field")]
@@ -52,6 +54,7 @@ namespace Infrastructure
 			BindPlayerResources();
 			BindFreeItemSpawner();
 			BindBootItemSpawner();
+			BindProductionSystem();
 			BindItemSpawnService();
 			BindGameFieldsParents();
 			BindTetrisFieldFactory();
@@ -62,6 +65,16 @@ namespace Infrastructure
 			BindResourceCellDataCollection();
 			BindItemSpawnerAfterDestruction();
 			BindProductionCellDataCollection();
+		}
+
+		void BindProductionSystem()
+		{
+			Assert.IsNotNull(_productionSystem);
+			
+			Container
+				.BindInterfacesTo<ProductionSystem>()
+				.FromInstance(_productionSystem)
+				.AsSingle();
 		}
 
 		void BindProductionCellsGenerator()

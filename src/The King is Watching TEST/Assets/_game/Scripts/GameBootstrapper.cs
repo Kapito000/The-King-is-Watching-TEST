@@ -2,6 +2,7 @@ using Infrastructure;
 using Input;
 using ItemSpawners;
 using ProductionCells;
+using Productions;
 using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
@@ -26,6 +27,7 @@ public class GameBootstrapper : MonoBehaviour
 	[Inject] IItemFactory _itemFactory;
 	[Inject] IInputService _inputService;
 	[Inject] IBootItemSpawner _bootItemSpawner;
+	[Inject] IProductionSystem _productionSystem;
 	[Inject] ITetrisFieldFactory _fieldFactory;
 	[Inject] IItemDataCollection _itemDataCollection;
 	[Inject] IProductionCellsGenerator _productionCellsGenerator;
@@ -36,8 +38,9 @@ public class GameBootstrapper : MonoBehaviour
 		CreateGameField();
 		CreateFreeItemsField();
 		CreateFreeItems();
-		_inputService.Enable();
+		_productionSystem.Init(_gameData.GameField);
 		InitUI();
+		_inputService.Enable();
 	}
 
 	void CreateGameField()

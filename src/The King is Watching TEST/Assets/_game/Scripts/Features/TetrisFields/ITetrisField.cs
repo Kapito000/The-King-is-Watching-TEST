@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ProductionCells;
 using ProductionCells.StaticData;
 using TetrisFields.Items;
+using UniRx;
 using UnityEngine;
 
 namespace TetrisFields
@@ -16,7 +17,9 @@ namespace TetrisFields
 		IItem GetItemAt(Vector2Int pos);
 		IEnumerable<IFieldCell> AllFields();
 		Vector2Int Size { get; }
-		void CreateProductionCell(Vector2Int pos, IProductionCellData data);
+		IObservable<Unit> FieldChanged { get; }
+		void CreateProductionCell(Vector2Int pos, IProductionCellData data,
+			int productionDataId);
 		IEnumerable<IProductionCell> AllProductionCells();
 
 		IEnumerable<IProductionCell> AllProductionCells(
@@ -24,5 +27,8 @@ namespace TetrisFields
 
 		IEnumerable<Vector2Int> AllProductionCellsCoordinates(
 			Func<IProductionCell, bool> where);
+
+		IEnumerable<IItem> AllItems();
+		IProductionCell ProductionCells(Vector2Int pos);
 	}
 }

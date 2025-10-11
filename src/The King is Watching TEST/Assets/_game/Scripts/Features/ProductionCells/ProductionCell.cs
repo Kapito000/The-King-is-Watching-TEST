@@ -1,6 +1,4 @@
-﻿using System;
-using ProductionCells.StaticData;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace ProductionCells
@@ -8,18 +6,18 @@ namespace ProductionCells
 	public sealed class ProductionCell : MonoBehaviour, IProductionCell
 	{
 		[SerializeField] SpriteRenderer _spriteRenderer;
-		
-		IProductionCellData _data;
+
+		public int ProductionDataId { get; private set; }
 
 		void Awake()
 		{
 			Assert.IsNotNull(_spriteRenderer);
 		}
 
-		public void Init(IProductionCellData data)
+		public void Init(int productionDataId, Color color)
 		{
-			_data	= data;
-			_spriteRenderer.color = _data.Color;
+			ProductionDataId = productionDataId;
+			_spriteRenderer.color = color;
 		}
 	}
 }

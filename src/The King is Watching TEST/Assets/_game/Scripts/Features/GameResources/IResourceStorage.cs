@@ -1,10 +1,10 @@
-﻿using System;
+﻿using UniRx;
 
 namespace GameResources
 {
 	public interface IResourceStorage
 	{
 		ResourceType Type { get; }
-		IObservable<int> Value { get; }
+		IReactiveProperty<int> Value { get; }
 	}
 }

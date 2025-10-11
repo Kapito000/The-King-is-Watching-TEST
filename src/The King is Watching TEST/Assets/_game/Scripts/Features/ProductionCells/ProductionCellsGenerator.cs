@@ -23,7 +23,8 @@ namespace ProductionCells
 
 		void GenerateBad(ITetrisField field)
 		{
-			if (TryGetData(_badCellsDataIndex, out var data) == false)
+			var dataIndex = _badCellsDataIndex;
+			if (TryGetData(dataIndex, out var data) == false)
 				return;
 
 			var size = field.Size;
@@ -47,13 +48,14 @@ namespace ProductionCells
 
 			foreach (var coord in coords)
 			{
-				field.CreateProductionCell(coord, data);
+				field.CreateProductionCell(coord, data, dataIndex);
 			}
 		}
 
 		void GenerateMiddle(ITetrisField field)
 		{
-			if (TryGetData(_middleCellsDataIndex, out var data) == false)
+			var dataIndex = _middleCellsDataIndex;
+			if (TryGetData(dataIndex, out var data) == false)
 				return;
 
 			var size = field.Size;
@@ -84,20 +86,21 @@ namespace ProductionCells
 
 			foreach (var coord in coords)
 			{
-				field.CreateProductionCell(coord, data);
+				field.CreateProductionCell(coord, data, dataIndex);
 			}
 		}
 
 		void GenerateBest(ITetrisField field)
 		{
-			if (TryGetData(_bestCellsDataIndex, out var data) == false)
+			var dataIndex = _bestCellsDataIndex;
+			if (TryGetData(dataIndex, out var data) == false)
 				return;
 
 			var coords = field.AllProductionCellsCoordinates(pc => pc == null);
 
 			foreach (var coord in coords)
 			{
-				field.CreateProductionCell(coord, data);
+				field.CreateProductionCell(coord, data, dataIndex);
 			}
 		}
 

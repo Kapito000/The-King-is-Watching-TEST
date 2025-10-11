@@ -1,5 +1,4 @@
-﻿using System;
-using UniRx;
+﻿using UniRx;
 using UnityEngine;
 
 namespace GameResources
@@ -9,6 +8,6 @@ namespace GameResources
 		[field: SerializeField] public ResourceType Type { get; private set; }
 		[field: SerializeField] IntReactiveProperty _value { get; set; } = new();
 		
-		public IObservable<int> Value => _value;
+		public IReactiveProperty<int> Value => _value;
 	}
 }

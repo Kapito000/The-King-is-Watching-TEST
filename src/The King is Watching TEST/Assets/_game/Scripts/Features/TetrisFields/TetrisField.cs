@@ -5,11 +5,12 @@ using Map;
 using ProductionCells;
 using ProductionCells.StaticData;
 using TetrisFields.Items;
+using UniRx;
 using UnityEngine;
 
 namespace TetrisFields
 {
-	public sealed class TetrisField : MonoBehaviour, ITetrisField
+	public sealed class TetrisField : MonoBehaviour, ITetrisField, IDisposable
 	{
 		Grid<IItem> _itemsGrid;
 		Grid<FieldCell> _fieldCellsGrid;
@@ -17,18 +18,25 @@ namespace TetrisFields
 
 		List<IItem> _items = new();
 
+		readonly ReactiveCommand _fieldChanged = new();
+
+		public IObservable<Unit> FieldChanged => _fieldChanged;
+
 		public IGrid<IItem> ItemsGrid => _itemsGrid;
 		public Vector2Int Size => _itemsGrid.Size;
 
-		public void CreateProductionCell(Vector2Int pos, IProductionCellData data)
+		public void CreateProductionCell(Vector2Int pos, IProductionCellData data,
+			int productionDataId)
 		{
 			var fieldCell = _fieldCellsGrid[pos.x, pos.y];
 			if (fieldCell.TryGetComponent<ProductionCell>(out var productionCell))
 			{
-				productionCell.Init(data);
+				productionCell.Init(productionDataId, data.Color);
 			}
 
 			_productionCellsGrid[pos.x, pos.y] = productionCell;
+
+			OnFieldChanged();
 		}
 
 		public void Init(Vector2Int size)
@@ -36,6 +44,8 @@ namespace TetrisFields
 			_itemsGrid = new Grid<IItem>(size.x, size.y);
 			_fieldCellsGrid = new Grid<FieldCell>(size.x, size.y);
 			_productionCellsGrid = new Grid<IProductionCell>(size.x, size.y);
+
+			OnFieldChanged();
 		}
 
 		public bool CanPutItem(Vector2Int[] cells, Vector2Int pos)
@@ -64,6 +74,8 @@ namespace TetrisFields
 
 			item.ReplaceTo(transform.position + pos.AsVector3());
 			_items.Add(item);
+
+			OnFieldChanged();
 		}
 
 		public void ExtractItem(IItem item)
@@ -75,11 +87,15 @@ namespace TetrisFields
 			}
 
 			_items.Remove(item);
+
+			OnFieldChanged();
 		}
 
 		public void SetFieldCell(FieldCell cell, Vector2Int pos)
 		{
 			_fieldCellsGrid[pos.x, pos.y] = cell;
+
+			OnFieldChanged();
 		}
 
 		public bool HasItemAt(Vector2Int pos)
@@ -134,6 +150,14 @@ namespace TetrisFields
 			}
 		}
 
+		public IEnumerable<IItem> AllItems() =>
+			_items;
+
+		public IProductionCell ProductionCells(Vector2Int pos)
+		{
+			return _productionCellsGrid[pos.x, pos.y];
+		}
+
 		void PlaceItem(int x, int y, IItem item)
 		{
 			_itemsGrid[x, y] = item;
@@ -142,6 +166,14 @@ namespace TetrisFields
 		void ExtractItem(int x, int y)
 		{
 			_itemsGrid[x, y] = null;
+		}
+
+		void OnFieldChanged() =>
+			_fieldChanged.Execute();
+
+		public void Dispose()
+		{
+			_fieldChanged?.Dispose();
 		}
 	}
 }
