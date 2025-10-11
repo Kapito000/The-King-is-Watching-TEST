@@ -9,7 +9,7 @@ namespace TetrisFields
 	public sealed class TetrisField : MonoBehaviour, ITetrisField
 	{
 		Grid<IItem> _itemsGrid;
-		Grid<IFieldCell> _fieldCellGrid;
+		Grid<IFieldCell> _fieldCellsGrid;
 
 		List<IItem> _items = new();
 
@@ -18,7 +18,7 @@ namespace TetrisFields
 		public void Init(Vector2Int size)
 		{
 			_itemsGrid = new Grid<IItem>(size.x, size.y);
-			_fieldCellGrid = new Grid<IFieldCell>(size.x, size.y);
+			_fieldCellsGrid = new Grid<IFieldCell>(size.x, size.y);
 		}
 
 		public bool CanPutItem(Vector2Int[] cells, Vector2Int pos)
@@ -62,7 +62,7 @@ namespace TetrisFields
 
 		public void SetFieldCell(IFieldCell cell, Vector2Int pos)
 		{
-			_fieldCellGrid[pos.x, pos.y] = cell;
+			_fieldCellsGrid[pos.x, pos.y] = cell;
 		}
 
 		public bool HasItemAt(Vector2Int pos)
@@ -82,7 +82,7 @@ namespace TetrisFields
 		}
 
 		public IEnumerable<IFieldCell> AllFields() => 
-			_fieldCellGrid;
+			_fieldCellsGrid;
 
 		void PlaceItem(int x, int y, IItem item)
 		{
