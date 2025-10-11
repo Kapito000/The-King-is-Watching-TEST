@@ -3,6 +3,7 @@ using GameResources.StaticData;
 using Input;
 using ItemDestruction;
 using ItemSpawners;
+using ProductionCells.StaticData;
 using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
@@ -35,6 +36,7 @@ namespace Infrastructure
 		[Header("Static data")]
 		[SerializeField] ItemDataCollection _itemDataCollection;
 		[SerializeField] ResourceCellDataCollection _resourceCellDataCollection;
+		[SerializeField] ProductionCellDataCollection _productionCellDataCollection;
 
 		public override void InstallBindings()
 		{
@@ -57,6 +59,16 @@ namespace Infrastructure
 			BindResourcesStorageViewPanel();
 			BindResourceCellDataCollection();
 			BindItemSpawnerAfterDestruction();
+			BindProductionCellDataCollection();
+		}
+
+		void BindProductionCellDataCollection()
+		{
+			Assert.IsNotNull(_productionCellDataCollection);
+			
+			Container
+				.BindInterfacesTo<IProductionCellDataCollection>()
+				.FromInstance(_productionCellDataCollection);
 		}
 
 		void BindResourcesStorageViewPanel()
