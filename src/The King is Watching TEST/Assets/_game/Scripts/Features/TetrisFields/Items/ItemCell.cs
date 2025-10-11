@@ -1,11 +1,16 @@
+using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
 
 namespace TetrisFields.Items
 {
-	public sealed class ItemCell : MonoBehaviour, IItemCell
+	public class ItemCell : MonoBehaviour, IItemCell
 	{
 		[SerializeField] SpriteRenderer _renderer;
+		
+		Subject<string> _renderLayerChanged = new();
+		public IObservable<string> RenderLayerChanged => _renderLayerChanged;
 
 		void Awake()
 		{
@@ -15,6 +20,7 @@ namespace TetrisFields.Items
 		public void SetRenderLayer(string layer)
 		{
 			_renderer.sortingLayerName = layer;
+			_renderLayerChanged.OnNext(layer);
 		}
 	}
 }

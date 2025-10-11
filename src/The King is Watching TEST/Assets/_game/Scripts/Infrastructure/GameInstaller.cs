@@ -1,4 +1,5 @@
 ﻿using GameResources;
+using GameResources.StaticData;
 using Input;
 using ItemDestruction;
 using ItemSpawners;
@@ -23,13 +24,14 @@ namespace Infrastructure
 		[Header("Game field")]
 		[SerializeField] Transform _gameFieldParent;
 		[SerializeField] FieldCell _tetrisFieldCellPrefab;
-		[SerializeField] TetrisField tetrisTetrisFieldPrefab;
+		[SerializeField] TetrisField _tetrisTetrisFieldPrefab;
 		[Header("Items")]
 		[SerializeField] Item _itemPrefab;
 		[SerializeField] ItemCell _itemCellPrefab;
 		[SerializeField] Transform _itemsParent;
 		[Header("Static data")]
 		[SerializeField] ItemDataCollection _itemDataCollection;
+		[SerializeField] ResourceCellDataCollection _resourceCellDataCollection;
 
 		public override void InstallBindings()
 		{
@@ -49,13 +51,24 @@ namespace Infrastructure
 			BindTetrisFieldFactory();
 			BindItemDataCollection();
 			BindDestructionItemService();
+			BindResourceCellDataCollection();
 			BindItemSpawnerAfterDestruction();
+		}
+
+		void BindResourceCellDataCollection()
+		{
+			Assert.IsNotNull(_resourceCellDataCollection);
+
+			Container
+				.BindInterfacesTo<ResourceCellDataCollection>()
+				.FromInstance(_resourceCellDataCollection)
+				.AsSingle();
 		}
 
 		void BindPlayerResources()
 		{
 			Assert.IsNotNull(_playerResources);
-			
+
 			Container
 				.BindInterfacesTo<PlayerResources>()
 				.FromInstance(_playerResources);
@@ -178,10 +191,10 @@ namespace Infrastructure
 
 			Container
 				.BindInstance(_itemPrefab)
-				.AsTransient();
+				.AsSingle();
 			Container
 				.BindInstance(_itemCellPrefab)
-				.AsTransient();
+				.AsSingle();
 		}
 
 		void BindGameFieldsParents()
@@ -200,16 +213,16 @@ namespace Infrastructure
 		void BindTetrisField()
 		{
 			Assert.IsNotNull(_tetrisFieldCellPrefab);
-			Assert.IsNotNull(tetrisTetrisFieldPrefab);
+			Assert.IsNotNull(_tetrisTetrisFieldPrefab);
 
 			Container
 				.Bind<TetrisField>()
-				.FromInstance(tetrisTetrisFieldPrefab)
-				.AsTransient();
+				.FromInstance(_tetrisTetrisFieldPrefab)
+				.AsSingle();
 
 			Container.Bind<FieldCell>()
 				.FromInstance(_tetrisFieldCellPrefab)
-				.AsTransient();
+				.AsSingle();
 		}
 
 		void BindTetrisFieldFactory()

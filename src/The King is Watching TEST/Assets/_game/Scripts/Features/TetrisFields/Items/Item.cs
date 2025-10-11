@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Extensions;
+using GameResources.StaticData;
 using UnityEngine;
 
 namespace TetrisFields.Items
@@ -7,6 +8,7 @@ namespace TetrisFields.Items
 	public sealed class Item : MonoBehaviour, IItem
 	{
 		[SerializeField] Vector2Int[] _cells;
+		[SerializeField] ResourceCellInfo _resourceCell;
 
 		List<ItemCell> _itemCells = new();
 
@@ -49,6 +51,11 @@ namespace TetrisFields.Items
 				_cells[i] = _cells[i].Rotate90();
 				_itemCells[i].transform.localPosition = _cells[i].AsVector3();
 			}
+		}
+
+		public void SetResourceCell(ResourceCellInfo info)
+		{
+			_resourceCell = info;
 		}
 
 		public void Destroy()
