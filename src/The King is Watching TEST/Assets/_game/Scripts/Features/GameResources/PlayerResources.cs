@@ -19,11 +19,12 @@ namespace GameResources
 			}
 		}
 
-		public bool TryGetResource(
+		public bool TryGetResourceStorage(
 			ResourceType resourceType,
-			out ResourceStorage resource)
+			out ResourceStorage resourceStorage)
 		{
-			return _resourcesDictionary.TryGetValue(resourceType, out resource);
+			return _resourcesDictionary.TryGetValue(resourceType,
+				out resourceStorage);
 		}
 
 		void AddToDictionary(ResourceStorage storage)

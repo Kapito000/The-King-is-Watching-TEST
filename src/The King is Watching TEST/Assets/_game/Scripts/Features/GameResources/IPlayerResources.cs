@@ -2,8 +2,8 @@
 {
 	public interface IPlayerResources
 	{
-		bool TryGetResource(
+		bool TryGetResourceStorage(
 			ResourceType resourceType,
-			out ResourceStorage resource);
+			out ResourceStorage resourceStorage);
 	}
 }

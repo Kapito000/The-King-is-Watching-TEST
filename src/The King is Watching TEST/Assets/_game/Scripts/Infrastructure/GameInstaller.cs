@@ -6,6 +6,7 @@ using ItemSpawners;
 using TetrisFields;
 using TetrisFields.Items;
 using TetrisFields.Items.StaticData;
+using UI.ResourcesView;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -29,6 +30,8 @@ namespace Infrastructure
 		[SerializeField] Item _itemPrefab;
 		[SerializeField] ItemCell _itemCellPrefab;
 		[SerializeField] Transform _itemsParent;
+		[Header("UI")]
+		[SerializeField] ResourcesStorageViewPanel[] _resourcesStorageViewPanels;
 		[Header("Static data")]
 		[SerializeField] ItemDataCollection _itemDataCollection;
 		[SerializeField] ResourceCellDataCollection _resourceCellDataCollection;
@@ -51,8 +54,20 @@ namespace Infrastructure
 			BindTetrisFieldFactory();
 			BindItemDataCollection();
 			BindDestructionItemService();
+			BindResourcesStorageViewPanel();
 			BindResourceCellDataCollection();
 			BindItemSpawnerAfterDestruction();
+		}
+
+		void BindResourcesStorageViewPanel()
+		{
+			foreach (var panel in _resourcesStorageViewPanels)
+			{
+				Container
+					.BindInterfacesTo<ResourcesStorageViewPanel>()
+					.FromInstance(panel)
+					.AsCached();
+			}
 		}
 
 		void BindResourceCellDataCollection()
