@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameResources;
+using ProductionCells;
 using ProductionCells.StaticData;
 using TetrisFields;
 using UniRx;
@@ -21,10 +22,10 @@ namespace Productions
 		{
 			foreach (var production in _productions)
 			{
-				if (production.TimeMoment <= Time.time)
+				if (Time.time <= production.TimeMoment)
 					continue;
 
-				production.TimeMoment = production.TimeSpan;
+				production.TimeMoment = Time.time + production.TimeSpan;
 				foreach (var resource in production.ResourceProductions)
 				{
 					if (_playerResources.TryGetResourceStorage(resource.Key,
@@ -67,24 +68,20 @@ namespace Productions
 		{
 			ResetProductionValues();
 
-			var resourceCells = _field
-				.AllItems()
-				.Select(item => item.ResourceCell);
+			var productionItemsCells = _field.ProductionItemCellGrid
+				.WithValues()
+				.Where(x => x.value != null);
 
-			foreach (var resourceCell in resourceCells)
+			foreach (var itemPair in productionItemsCells)
 			{
-				var productionCell = _field.ProductionCells(resourceCell.Pos);
+				IProductionCell productionCell =
+					_field.ProductionCellsGrid[itemPair.cell.x, itemPair.cell.y];
 
 				foreach (var productionTimer in _productions)
 				{
-					if (productionTimer.ProductionDataId !=
-					    productionCell.ProductionDataId)
-					{
-						continue;
-					}
-
 					var modifier = Modifier(productionCell.ProductionDataId);
-					productionTimer.ResourceProductions[resourceCell.Type] +=
+					productionTimer
+							.ResourceProductions[itemPair.value.Type] +=
 						1 * modifier;
 				}
 			}
@@ -96,8 +93,11 @@ namespace Productions
 		void ResetProductionValues()
 		{
 			foreach (var production in _productions)
-			foreach (var pair in production.ResourceProductions)
-				production.ResourceProductions[pair.Key] = 0;
+			{
+				var keys = production.ResourceProductions.Keys.ToArray();
+				foreach (var key in keys)
+					production.ResourceProductions[key] = 0;
+			}
 		}
 	}
 }

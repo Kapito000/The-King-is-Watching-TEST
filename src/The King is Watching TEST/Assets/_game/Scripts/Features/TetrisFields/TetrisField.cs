@@ -15,6 +15,7 @@ namespace TetrisFields
 		Grid<IItem> _itemsGrid;
 		Grid<FieldCell> _fieldCellsGrid;
 		Grid<IProductionCell> _productionCellsGrid;
+		Grid<ResourceCellInfo> _productionItemCellGrid;
 
 		List<IItem> _items = new();
 
@@ -22,8 +23,12 @@ namespace TetrisFields
 
 		public IObservable<Unit> FieldChanged => _fieldChanged;
 
-		public IGrid<IItem> ItemsGrid => _itemsGrid;
 		public Vector2Int Size => _itemsGrid.Size;
+		public IGrid<IItem> ItemsGrid => _itemsGrid;
+		public IGrid<IProductionCell> ProductionCellsGrid => _productionCellsGrid;
+		public IReadOnlyList<IItem> Items => _items;
+		public Grid<ResourceCellInfo> ProductionItemCellGrid =>
+			_productionItemCellGrid;
 
 		public void CreateProductionCell(Vector2Int pos, IProductionCellData data,
 			int productionDataId)
@@ -44,6 +49,7 @@ namespace TetrisFields
 			_itemsGrid = new Grid<IItem>(size.x, size.y);
 			_fieldCellsGrid = new Grid<FieldCell>(size.x, size.y);
 			_productionCellsGrid = new Grid<IProductionCell>(size.x, size.y);
+			_productionItemCellGrid = new Grid<ResourceCellInfo>(size.x, size.y);
 
 			OnFieldChanged();
 		}
@@ -117,23 +123,6 @@ namespace TetrisFields
 		public IEnumerable<IFieldCell> AllFields() =>
 			_fieldCellsGrid;
 
-		public IEnumerable<IProductionCell> AllProductionCells() =>
-			_productionCellsGrid;
-
-		public IEnumerable<IProductionCell> AllProductionCells(
-			Func<IProductionCell, bool> where)
-		{
-			if (where == null)
-			{
-				Debug.LogError("The condition is null.");
-				yield break;
-			}
-
-			foreach (var productionCell in AllProductionCells())
-				if (where.Invoke(productionCell))
-					yield return productionCell;
-		}
-
 		public IEnumerable<Vector2Int> AllProductionCellsCoordinates(
 			Func<IProductionCell, bool> where)
 		{
@@ -150,9 +139,6 @@ namespace TetrisFields
 			}
 		}
 
-		public IEnumerable<IItem> AllItems() =>
-			_items;
-
 		public IProductionCell ProductionCells(Vector2Int pos)
 		{
 			return _productionCellsGrid[pos.x, pos.y];
@@ -161,11 +147,13 @@ namespace TetrisFields
 		void PlaceItem(int x, int y, IItem item)
 		{
 			_itemsGrid[x, y] = item;
+			_productionItemCellGrid[x, y] = item.ResourceCell;
 		}
 
 		void ExtractItem(int x, int y)
 		{
 			_itemsGrid[x, y] = null;
+			_productionItemCellGrid[x, y] = null;
 		}
 
 		void OnFieldChanged() =>

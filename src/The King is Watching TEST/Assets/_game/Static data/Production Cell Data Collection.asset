@@ -15,7 +15,7 @@ MonoBehaviour:
   _productionData:
   - _color: {r: 0, g: 1, b: 0, a: 1}
     _productionModifier: 1
-    _productionTimer: 0
+    _productionTimer: 1
   - _color: {r: 1, g: 1, b: 0, a: 1}
     _productionModifier: 0.4
     _productionTimer: 2.5
